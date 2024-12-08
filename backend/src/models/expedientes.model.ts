@@ -1,21 +1,27 @@
 import { DataTypes, Model } from "sequelize";
 import ConnectionDatabaseService from "../db/connections";
 import loggerService from "../helpers/loggerService";
-import {} from "./index.model";
+import { Alumnos } from "./index.model";
 import { IExpedientesAtrributes, IExpedientesCreationAttributes } from "../interfaces/expedientes.interface";
 
 
 class Expedientes extends Model<IExpedientesAtrributes, IExpedientesCreationAttributes> implements IExpedientesAtrributes {
     // Propiedades privadas
+    private _noExpediente!: string;
     private _matricula!: number;
-    private _nombreCompleto!: string;
-    private _cuatrimestre!: number ;
-    private _carrera!: string;
-    private _correo!: string;
-    private _telefono!: number ;
+    private _fecha!: Date;
+    private _tipo!: string ;
     private _estatus!: boolean
 
     // Getters y setters públicos
+    public get noExpediente(): string {
+        return this._noExpediente;
+    }
+
+    public set noExpediente(value: string) {
+        this._noExpediente = value;
+    }
+
     public get matricula(): number {
         return this._matricula;
     }
@@ -24,44 +30,20 @@ class Expedientes extends Model<IExpedientesAtrributes, IExpedientesCreationAttr
         this._matricula = value;
     }
 
-    public get nombreCompleto(): string  {
-        return this._nombreCompleto;
+    public get fecha(): Date  {
+        return this._fecha;
     }
 
-    public set nombreCompleto(value: string) {
-        this._nombreCompleto = value;
+    public set fecha(value: Date) {
+        this._fecha = value;
     }
 
-    public get cuatrimestre(): number {
-        return this._cuatrimestre;
+    public get tipo(): string {
+        return this._tipo;
     }
 
-    public set cuatrimestre(value: number) {
-        this._cuatrimestre = value;
-    }
-    
-    public get carrera(): string  {
-        return this._carrera;
-    }
-    
-    public set carrera(value: string) {
-        this._carrera = value;
-    }
-    
-    public get correo(): string  {
-        return this._correo;
-    }
-    
-    public set correo(value: string) {
-        this._correo = value;
-    }
-    
-    public get telefono(): number {
-        return this._telefono;
-    }
-
-    public set telefono(value: number) {
-        this._telefono = value;
+    public set tipo(value: string) {
+        this._tipo = value;
     }
 
     public get estatus(): boolean {
@@ -75,65 +57,49 @@ class Expedientes extends Model<IExpedientesAtrributes, IExpedientesCreationAttr
 
 // Inicializar el modelo con los atributos y la conexión sequelize
 export default Expedientes.init({
-    matricula: {
+    noExpediente: {
         type: DataTypes.STRING(20),
         primaryKey: true,
         unique: true,
         get() {
-            return this.getDataValue('matricula');
-        },
-        set(value: number) {
-            this.setDataValue('matricula', value);
-        }
-    },
-    nombreCompleto: {
-        type: DataTypes.TEXT,
-        allowNull: false,
-        get() {
-            return this.getDataValue('nombreCompleto');
+            return this.getDataValue('noExpediente');
         },
         set(value: string) {
-            this.setDataValue('nombreCompleto', value);
+            this.setDataValue('noExpediente', value);
         }
     },
-    cuatrimestre: {
+    matricula: {
+        type: DataTypes.INTEGER,
+        references: {
+            model: Alumnos,
+            key: 'matricula'
+        },
+        allowNull: false,
+        get() {
+            return this.getDataValue('noExpediente');
+        },
+        set(value: string) {
+            this.setDataValue('noExpediente', value);
+        }
+    },
+    fecha: {
+        type: DataTypes.DATEONLY,
+        allowNull: false,
+        get() {
+            return this.getDataValue('fecha');
+        },
+        set(value: Date) {
+            this.setDataValue('fecha', value);
+        }
+    },
+    tipo: {
         type: DataTypes.TEXT,
         allowNull: true,
         get() {
-            return this.getDataValue('cuatrimestre');
-        },
-        set(value: number) {
-            this.setDataValue('cuatrimestre', value);
-        }
-    },
-    carrera: {
-        type: DataTypes.TEXT,
-        allowNull: false,
-        get() {
-            return this.getDataValue('carrera');
+            return this.getDataValue('tipo');
         },
         set(value: string) {
-            this.setDataValue('carrera', value);
-        }
-    },
-    correo: {
-        type: DataTypes.TEXT,
-        allowNull: false,
-        get() {
-            return this.getDataValue('correo');
-        },
-        set(value: string) {
-            this.setDataValue('correo', value);
-        }
-    },
-    telefono: {
-        type: DataTypes.TEXT,
-        allowNull: true,
-        get() {
-            return this.getDataValue('telefono');
-        },
-        set(value: number) {
-            this.setDataValue('telefono', value);
+            this.setDataValue('tipo', value);
         }
     },
     estatus:{

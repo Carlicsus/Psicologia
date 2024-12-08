@@ -3,7 +3,6 @@ import fs from 'fs';
 import path from 'path';
 import { IEmailRegistro, InventorData } from '../interfaces/email.interface';
 import juice from 'juice';
-import { Inventore } from '../interfaces/expedientes.interface';
 import {} from '../models/index.model';
 
 class EmailService {
