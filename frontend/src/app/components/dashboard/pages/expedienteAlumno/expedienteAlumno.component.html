@@ -1,6 +1,6 @@
-<div class="py-6 px-6">
+<div>
   <div class="expediente-container">
-    <h1>Expedientes de Alumnos</h1>
+    <h1>Expedientes de alumno</h1>
   
     <!-- Tabla de Angular Material -->
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
@@ -15,6 +15,12 @@
       <ng-container matColumnDef="fechaCreacion">
         <th mat-header-cell *matHeaderCellDef>Fecha Creación</th>
         <td mat-cell *matCellDef="let expediente">{{ expediente.fechaCreacion | date:'short' }}</td>
+      </ng-container>
+
+      <!-- Fecha Creación -->
+      <ng-container matColumnDef="fechaSesion">
+        <th mat-header-cell *matHeaderCellDef>Fecha Creación</th>
+        <td mat-cell *matCellDef="let expediente">{{ expediente.historialSesion.fechaSesion | date:'short' }}</td>
       </ng-container>
   
       <!-- Motivo -->
