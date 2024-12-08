@@ -1,6 +1,5 @@
 import loggerService from "../helpers/loggerService";
 import { IHistoricosExpedientesAttributes, IHistoricosExpedientesCreationAttributes, IHistoricosExpedientesForRelations, IHistoricosExpedientesLastRecord } from "../interfaces/historicosExpedientes.interface";
-import { IScraperHistoricoCorrectos } from "../interfaces/workers/scraperHistoricoWorker.interface";
 import { Expedientes, HistoricosExpedientes } from "../models/index.model";
 import ExpedientesDAO from './expedientes.dao';
 
@@ -24,35 +23,6 @@ class HistoricosExpedientesDAO {
     });
 
     return historico as IHistoricosExpedientesAttributes[];
-  }
-
-  public async createHistoricoScraped(historicos: IScraperHistoricoCorrectos[]): Promise<void> {
-    for (const historico of historicos) {
-      const { noExpediente, data } = historico;
-      loggerService.log('info', `Procesando la informacion del expediente '${noExpediente}'`);
-      const validateExpediente = await Expedientes.findOne({ where: { noExpediente: noExpediente }, raw: true });
-      if (!validateExpediente) {
-        loggerService.log('info', `No existe el expediente con numero de expediente '${noExpediente}', no se puede procesar la informacion`);
-        continue;
-      }
-      for (const historico of data) {
-        const { noDocumento, codigoBarras, descripcion, tipo, fecha } = historico;
-        const validateHistorico = await HistoricosExpedientes.findOne({ where: { noDocumento: noDocumento }, raw: true });
-        if (validateHistorico) {
-          loggerService.log('info', `Ya existe un historico con el noDocumento '${noDocumento}'`);
-          continue;
-        }
-        await HistoricosExpedientes.create({
-          noExpediente,
-          noDocumento,
-          codigoBarras,
-          descripcion,
-          tipo,
-          fecha
-        });
-        loggerService.log('info', `Se creo un historico del expediente ${noExpediente} con el numero de documento ${noDocumento}`);
-      }
-    }
   }
 
   public async getLastRecords(): Promise<IHistoricosExpedientesLastRecord[]> {

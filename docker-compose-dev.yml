@@ -105,7 +105,6 @@ services:
     depends_on:
       - backend
       - frontend
-      - scraperSeeder
     #Este docker debe de reciniciarse si hay un error o un reincio en el host
     restart: always
     #Se construira en base a un Dockerfile ubicado en la raiz de la carpeta "/nginx" (Dentro de .config viene la configuracion usando el docker "frontend y backend")
@@ -115,31 +114,6 @@ services:
     #Se enruta el puerto en el que corre nginx al 3050 del anfitrion
     ports:
       - "3050:80"
-
-  #Configuracion para el docker "selenium" (Dentro de este viene toda la configuracion de un chrome para test) 
-  scraperSeeder:
-    #Se usa una imagen de selenium chrome la mas actual a la fecha de hoy
-    image: selenium/standalone-chrome:122.0
-    environment:
-      VNC_PASSWORD: ${PASSWORD_VNC_SEEDER}
-
-  scraperHistorico:
-    #Se usa una imagen de selenium chrome la mas actual a la fecha de hoy
-    image: selenium/standalone-chrome:122.0
-    environment:
-      VNC_PASSWORD: ${PASSWORD_VNC_HISTORICO}
-    ports:
-      #El puerto 7900 es importante ya que desde el podremos ver todo lo que realiza el scraper 
-      - "7902:7900"
-
-  scraperNotificacion:
-    #Se usa una imagen de selenium chrome la mas actual a la fecha de hoy
-    image: selenium/standalone-chrome:122.0
-    environment:
-      VNC_PASSWORD: ${PASSWORD_VNC_EXPEDIENTES}
-    ports:
-      #El puerto 7900 es importante ya que desde el podremos ver todo lo que realiza el scraper 
-      - "7903:7900"
 
 volumes:
   #Estos son volumenes nombrados que son usados en la construccion de los dockers anteriores

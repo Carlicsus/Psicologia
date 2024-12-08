@@ -5,12 +5,9 @@ import { writeFileSync } from 'fs';
 class LoggerService {
   
   private static instance: LoggerService;
-  private loggerDaly: Logger;
   private loggerSystem: Logger;
 
   private constructor() {
-    // Crear el logger Daly
-    this.loggerDaly = this.loggerSetup("Daly");
 
     // Crear el logger System
     this.loggerSystem = this.loggerSetup("System")
@@ -60,7 +57,6 @@ class LoggerService {
   }
 
   public log(level: string, message: string): void {
-    this.loggerDaly.log(level, message);
     this.loggerSystem.log(level, message);
   }
 

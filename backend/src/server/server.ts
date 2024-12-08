@@ -13,18 +13,10 @@ import UsuariosDAO from "../dao/usuarios.dao";
 import ConnectionDatabaseService from "../db/connections";
 import Horarios from "../helpers/horarios";
 import loggerService from "../helpers/loggerService";
-import WorkerSeederService from "../helpers/workers/scraperSeederWorker";
-import WorkerHistoricoService from "../helpers/workers/scraperHistoricoWorker";
-import WorkerNotificacionService from "../helpers/workers/scraperNotificacionWorker";
-import { Expedientes, Gacetas, HistoricosExpedientes, Institutos, Notificaciones, Secciones, TemporalesNotificaciones, Usuarios } from "../models/index.model";
+import { Expedientes, HistoricosExpedientes, Usuarios } from "../models/index.model";
 import ExpedientesRoutes from '../routes/expedientes.routes';
 import HistoricosExpedientesRoutes from '../routes/historicosExpedientes.routes';
-import InventoresRoutes from '../routes/inventores.routes';
 import UsuarioRoutes from '../routes/usuarios.routes';
-import NotificacionesRoutes from '../routes/notificaciones.routes';
-import gacetasSeeder from "../seeders/gacetas.seeder";
-import institutosSeeder from '../seeders/institutos.seeder';
-import seccionesSeeder from '../seeders/secciones.seeder';
 import usuariosSeed from '../seeders/usuarios.seeder';
 import HistoricosExpedientesDAO from '../dao/historicosExpedientes.dao';
 import { DATE } from 'sequelize';
@@ -87,8 +79,6 @@ class Server {
         this.app.use("/api/users", UsuarioRoutes.getRouter());
         this.app.use("/api/expedientes", ExpedientesRoutes.getRouter());
         this.app.use('/api/historico', HistoricosExpedientesRoutes.getRouter());
-        this.app.use('/api/inventores', InventoresRoutes.getRouter());
-        this.app.use('/api/notificaciones', NotificacionesRoutes.getRouter());
     }
 
     // Configuracion de los middlewares del servidor
@@ -134,9 +124,6 @@ class Server {
                 });
 
                 ws.send(JSON.stringify({ clientId }));
-                ws.send(JSON.stringify({ buttonEnable: await WorkerSeederService.queueStatus() }));
-                ws.send(JSON.stringify({ buttonEnableHistorico: await WorkerHistoricoService.queueStatus() }));
-                ws.send(JSON.stringify({ buttonEnableNotificaion: await WorkerNotificacionService.queueStatus() }));
 
                 const pingInterval = setInterval(() => {
                     if (ws.readyState === WebSocket.OPEN) {
@@ -165,7 +152,6 @@ class Server {
             await ConnectionDatabaseService.getConnectionSequelize().sync();
             await Promise.all([
                 Usuarios.bulkCreate(usuariosSeed),
-                Institutos.bulkCreate(institutosSeeder),
                 // Secciones.bulkCreate(seccionesSeeder),
                 // Gacetas.bulkCreate(gacetasSeeder),
             ]);
@@ -211,122 +197,6 @@ class Server {
 
     // Configuracion de las tareas diarias
     private dalyTasks(): void {
-        cron.schedule(this.Horarios.getHorarioScrapperSeeder(), async () => {
-            // Obtenemos los expedientes incompletos de la base de datos
-            const expedientesPendientes = await ExpedientesDAO.getAllExpedientesPendientes();
-
-            if (expedientesPendientes.length > 0) {
-                //Mandar a llamar a la cola de trabajo de scraper seeder
-                WorkerSeederService.addJob('scrapeJob', {
-                    expedientesPendientes
-                });
-
-                loggerService.log('info', "Ejecutando tarea diaria del scraper seeder, hay expedientes pendientes");
-                return
-            }
-
-            loggerService.log('info', "No fue necesario ejecutar la tarea diaria del scraper seeder, no hay expedientes pendientes");
-            return
-        });
-
-        cron.schedule(this.Horarios.getHorarioScrapperHistorico(), async () => {
-            loggerService.log('info', "Ejecutando tarea diaria del scraper de historico");
-
-            // TODO: Obtenemos los ultimos registros de historico de la base de datos
-            const ultimosHistoricos = await HistoricosExpedientesDAO.getLastRecords();
-            console.log(ultimosHistoricos);
-
-            //Mandar a llamar a la cola de trabajo de scraper DE HISTORICO
-            WorkerHistoricoService.addJob('scrapeJob', {
-                ultimosHistoricos
-            });
-        });
-
-        cron.schedule(this.Horarios.getHorarioScrapperNotificacion(), async () => {
-            loggerService.log('info', "Ejecutando tarea diaria del scraper de notificacion");
-
-            // TODO: se necesita obtener los ultimos registros de notificacion de la base de datos
-
-            interface ha {
-                noExpediente: string;
-                Notificaciones: Notificacione[];
-                TemporalesNotificaciones: Notificacione[];
-            }
-
-            interface Notificacione {
-                numeroOficio: number | null;
-                fechaCirculacion: Date;
-            }
-
-
-            const expedientes = await Expedientes.findAll({
-                where:{status:true},
-                include: [
-                    {
-                        model: TemporalesNotificaciones,
-                        order: [['fechaCirculacion', 'DESC']],
-                        attributes: ['numeroOficio', 'fechaCirculacion'],
-                        limit: 1,
-                    },
-                    {
-                        model: Notificaciones,
-                        order: [['fechaCirculacion', 'DESC']],
-                        attributes: ['numeroOficio', 'fechaCirculacion'],
-                        limit: 1,
-                    }
-                ],
-                attributes: ['noExpediente'],
-                nest: true
-            }) as unknown as ha[];
-
-            //Procesa los resultados para determinar la notificación más reciente
-            const ultimasNotificaciones = expedientes.map(expediente => {
-                const lastTemporalNotificacion = expediente.TemporalesNotificaciones[0];
-                const lastNotificacion = expediente.Notificaciones[0];
-
-                let lastNotificaionCompare;
-
-                // Compara las fechas de circulación para determinar la notificación más reciente
-                if (lastTemporalNotificacion && lastNotificacion) {
-                    lastNotificaionCompare = new Date(lastTemporalNotificacion.fechaCirculacion) > new Date(lastNotificacion.fechaCirculacion)
-                        ? {
-                            fechaCirculacion: lastTemporalNotificacion.fechaCirculacion,
-                            numeroOficio: lastTemporalNotificacion.numeroOficio,
-                        }
-                        : {
-                            fechaCirculacion: lastNotificacion.fechaCirculacion,
-                            numeroOficio: lastNotificacion.numeroOficio,
-                        };
-                } else if (lastTemporalNotificacion) {
-                    lastNotificaionCompare = {
-                        fechaCirculacion: lastTemporalNotificacion.fechaCirculacion,
-                        numeroOficio: lastTemporalNotificacion.numeroOficio,
-                    };
-                } else if (lastNotificacion) {
-                    lastNotificaionCompare = {
-                        fechaCirculacion: lastNotificacion.fechaCirculacion,
-                        numeroOficio: lastNotificacion.numeroOficio,
-                    };
-                } else {
-                    lastNotificaionCompare = {
-                        fechaCirculacion: null,
-                        numeroOficio: null
-                    }
-                }
-
-                return {
-                    noExpediente: expediente.noExpediente,
-                    numeroOficio: lastNotificaionCompare.numeroOficio,
-                    fechaCirculacion: lastNotificaionCompare.fechaCirculacion
-                };
-            });
-
-            //Mandar a llamar a la cola de trabajo de scrape r DE HISTORICO
-            WorkerNotificacionService.addJob('scrapeJob', {
-                ultimasNotificaciones
-            });
-        });
-
         // Tarea diaria que se ejecutara todos los dias a las 12:00 AM
         cron.schedule('0 0 0 * * *', async () => {
             // Limpiar el contenido del archivo de logs
@@ -346,48 +216,6 @@ class Server {
             await ExpedientesDAO.deleteExpedeintesNoEncontrados(fechaLimiteExpedientes);
 
             const expedientes = await ExpedientesDAO.getAllNoExpedientes();
-
-            for (const expediente of expedientes) {
-                const temporales = await TemporalesNotificaciones.findAll({ where: { noExpediente: expediente.noExpediente } });
-                const historicos = await HistoricosExpedientes.findAll({ where: { noExpediente: expediente.noExpediente, tipo: 'OFICIO' }, attributes: ['codigoBarras', 'noDocumento'], order: [['fecha', 'ASC']], raw: true });
-                console.log(historicos);
-                // Modificar el valor de codigoBarras para que solo contenga los últimos digitos
-                for (let historico of historicos) {
-                    const partes = historico.codigoBarras.split('/');
-                    historico.codigoBarras = partes[partes.length - 1];
-                }
-                console.log(historicos);
-                for (const temporal of temporales) {
-                    const historicoMatch = historicos.find(h => h.codigoBarras === String(temporal.numeroOficio));
-                    if (historicoMatch) {
-                        console.log(`Encontrado historico con noDocumento ${temporal.numeroOficio}:`, historicoMatch);
-                        let existGaceta = await Gacetas.findOne({ where: { idGaceta: temporal.idGaceta }, raw: true });
-                        // TODO: Buscar por similitud?
-                        let existSeccion = await Secciones.findOne({ where: { idSeccion: temporal.idSeccion }, raw: true });
-                        // TODO: cambiar la fecha de circulacion por la correcta que viene del scraper
-                        let existNotificacion = await Notificaciones.findOne({ where: { fechaCirculacion: temporal.fechaCirculacion, numeroOficio: temporal.numeroOficio }, raw: true });
-                        if (!existNotificacion) {
-                            existNotificacion = await Notificaciones.create({
-                                noExpediente: temporal.noExpediente,
-                                noDocumento: historicoMatch.noDocumento,
-                                ejemplar: temporal.ejemplar,
-                                idGaceta: existGaceta!.idGaceta,
-                                idSeccion: existSeccion!.idSeccion,
-                                fechaCirculacion: temporal.fechaCirculacion,
-                                descripcionGeneralAsunto: temporal.descripcionGeneralAsunto,
-                                fechaOficio: temporal.fechaOficio,
-                                numeroOficio: temporal.numeroOficio
-                            });
-                        }
-                        await TemporalesNotificaciones.destroy({ where: { idTemporalNotificacion: temporal.idTemporalNotificacion } });
-                        continue;
-                    } else {
-                        console.log(`No se encontró historico con noDocumento ${temporal.numeroOficio}`);
-                    }
-                }
-            }
-
-            // TODO: Ver que hacer cuando no encuentra ni un solo historico D,:
 
 
         });

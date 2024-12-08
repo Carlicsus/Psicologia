@@ -9,10 +9,7 @@ import { MatIcon } from '@angular/material/icon';
 
 import { SpinnerComponent } from '../../../../shared/spinner/spinner.component';
 import { RegisterDialogComponent } from './dialogs/register-dialog.component';
-import { BackendService } from '../../../../core/services/backend.service';
 import { SeeResumeFull } from './dialogs/seeFulResume.component';
-import { Patente } from '../../../../core/interfaces/patente';
-import { BlockService } from '../../../../core/services/block.service';
 import { Alumno } from '../../../../core/interfaces/alumno';
 
 @Component({
@@ -23,8 +20,7 @@ import { Alumno } from '../../../../core/interfaces/alumno';
 })
 export default class RegisterComponent implements OnInit, AfterViewInit {
 
-  //Atributos
-  private listExpedientes: Patente[] = [];
+  // Atributos
   private listAlumnos: Alumno[] = [
     {
       matricula: 220308,
@@ -49,8 +45,8 @@ export default class RegisterComponent implements OnInit, AfterViewInit {
   protected loading: boolean = false;
   protected displayedColumns: string[] = [
     'matricula',
-    'nombre',
-    'apellidos',
+    'nombreCompleto',
+    'cuatrimestre',
     'carrera',
     'correo',
     'telefono',
@@ -60,19 +56,16 @@ export default class RegisterComponent implements OnInit, AfterViewInit {
   protected readonly dialog = inject(MatDialog);
   protected buttonEnable: boolean = true;
   protected buttonNotificaciones: boolean = true;
-  
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  
-  private _backendService = inject(BackendService);
-  private _blockService = inject(BlockService);
+
   private changeDetector = inject(ChangeDetectorRef);
   private router = inject(Router);
 
-  //Métodos
-
+  // Métodos
   public ngOnInit(): void {
-    this.loading = true;
-    this.getExpedientes();    
+    this.loading = false; // Asignación de datos inicial
+    this.dataSource.data = this.listAlumnos;
   }
 
   public ngAfterViewInit(): void {
@@ -82,8 +75,7 @@ export default class RegisterComponent implements OnInit, AfterViewInit {
   }
 
   public reload(): void {
-    this.loading = true;
-    this.getExpedientes();
+    this.dataSource.data = this.listAlumnos; // Reasigna los datos
     this.changeDetector.detectChanges();
   }
 
@@ -92,8 +84,8 @@ export default class RegisterComponent implements OnInit, AfterViewInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  protected abrirVidoc(expediente: Patente): void {
-    this.router.navigate(['/dashboard/expediente']);    
+  protected abrirVidoc(alumno: Alumno): void {
+    this.router.navigate(['/dashboard/expediente']);
   }
 
   protected openDialog(contenido: string): void {
@@ -105,21 +97,6 @@ export default class RegisterComponent implements OnInit, AfterViewInit {
   protected abrirRegistrar(): void {
     this.dialog.open(RegisterDialogComponent, {
       width: '85%',
-    })
-  }
-
-
-  private getExpedientes(): void {
-    this._backendService.getExpedientes().subscribe((data) => {
-      this.listExpedientes = [];
-
-      this.dataSource.data = this.listAlumnos;
-      this.loading = false;
-
-      setTimeout(() => {
-        this.dataSource.paginator = this.paginator;
-      });
     });
   }
-
 }

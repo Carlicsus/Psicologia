@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import HistoricosExpedientesDAO from '../dao/historicosExpedientes.dao';
-import WorkerHistoricoService from "../helpers/workers/scraperHistoricoWorker";
 import path from 'path';
 import fs from 'fs';
 
@@ -44,20 +43,6 @@ class HistoricosExpedientesController {
         }
 
         return res.status(404).json({ msg: 'Archivo no encontrado' });
-    }
-
-    public async lauchScraperHistorico(req: Request, res: Response): Promise<Response | void> {
-        const ultimosHistoricos = await HistoricosExpedientesDAO.getLastRecords();
-
-        const clientId = req.headers.websocketclientid as string;
-
-        //Mandar a llamar a la cola de trabajo de scraper DE HISTORICO
-        WorkerHistoricoService.addJob('scrapeJob', {
-            ultimosHistoricos,
-            clientId
-        });
-
-        return res.status(201).json({ msg: 'ok' })
     }
 
 }

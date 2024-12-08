@@ -1,20 +1,18 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
+import { AfterViewInit, ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { ViewChild } from '@angular/core';
 import { ExpedienteAlumno } from '../../../../core/interfaces/expedienteAlumno';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-expediente-alumno',
   standalone: true,
-  imports: [
-    MatTableDataSource,
-    MatPaginator
-  ],
+  imports: [ MatPaginator, MatTableModule, CommonModule ],
   templateUrl: './expedienteAlumno.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class ExpedienteAlumnoComponent {
+export default class ExpedienteAlumnoComponent implements OnInit, AfterViewInit {
 
   // Datos simulados
   private listExpediente: ExpedienteAlumno[] = Array.from({ length: 50 }, (_, i) => ({
@@ -28,14 +26,25 @@ export default class ExpedienteAlumnoComponent {
     }
   }));
 
-  // Configuración de la tabla y paginación
-  public displayedColumns: string[] = ['noExpediente', 'fechaCreacion', 'motivo', 'duracion', 'observaciones'];
-  public dataSource = new MatTableDataSource<ExpedienteAlumno>(this.listExpediente);
-
+  protected displayedColumns: string[] = [
+    "noExpediente",
+    "fechaCreacion",
+    "fechaSesion",
+    "motivo",
+    "duracion",
+    "observaciones"
+  ];
+  protected dataSource = new MatTableDataSource<ExpedienteAlumno>(this.listExpediente)
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-
-  // Inicializar el paginador
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
+  
+  ngOnInit(): void {
+    this.dataSource.data = this.listExpediente;
   }
+
+  public ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.dataSource.paginator = this.paginator;
+    });
+  }
+
 }
