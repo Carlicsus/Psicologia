@@ -19,6 +19,12 @@ export const routes: Routes = [
         canActivate:[authGuard],
         children: [
             {
+                path: 'expediente',
+                title: 'Expediente de alumno',
+                loadComponent: () => import('./components/dashboard/pages/expedienteAlumno/expedienteAlumno.component'),
+                canActivate: [authGuard]
+            },
+            {
                 path: 'register',
                 title: 'Registrar Expediente',
                 loadComponent: () => import('./components/dashboard/pages/register/register.component'),

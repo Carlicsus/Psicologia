@@ -93,7 +93,7 @@ export default class RegisterComponent implements OnInit, AfterViewInit {
   }
 
   protected abrirVidoc(expediente: Patente): void {
-    this.router.navigate(['/dashboard/vidoc', expediente]);    
+    this.router.navigate(['/dashboard/expediente']);    
   }
 
   protected openDialog(contenido: string): void {
