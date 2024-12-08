@@ -4,5 +4,10 @@
         "Instituto",
         "Solicitantes"
     ],
-    "editor.tabSize": 2
+    "editor.tabSize": 2,
+    "angular-schematics.schematicsDefaultOptions": {
+        "angular-*": {
+            "externalTemplate": true
+        }
+    }
 }

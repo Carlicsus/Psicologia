@@ -1,29 +1,6 @@
-2024-12-08 00:00:00 - [Backend] - INFO - Ejecutando tarea diaria del scraper de notificacion
-2024-12-08 00:00:00 - [Backend] - INFO - Se reiniciaron los logs diarios
-2024-12-08 00:00:00 - [Backend] - INFO - Hora de ejecucion del scraper Seeder: 1:37:12 AM
-2024-12-08 00:00:00 - [Backend] - INFO - Hora de ejecucion del scraper Historico: 8:43:25 AM
-2024-12-08 00:00:01 - [Backend] - INFO - Hora de ejecucion del scraper Expediente: 10:55:25 AM
-2024-12-08 00:00:01 - [Backend] - INFO - No se encontraron usuarios con mas de 1 dia sin ser confirmados
-2024-12-08 00:00:01 - [Backend] - INFO - No se encontraron Expedientes que están pendientes por más de 6 meses
-2024-12-08 00:01:11 - scrapper - [Notificacion] - INFO - INICIANDO - Fecha y Hora: 2024-12-08 00:01:11
-2024-12-08 00:01:12 - scrapper - [Historico] - INFO - INICIANDO scraping para el expediente MX/a/2019/007937
-2024-12-08 00:02:13 - scrapper - [Notificacion] - INFO - Abriendo página de SIGA
-2024-12-08 00:02:18 - scrapper - [Historico] - INFO - noExpediente MX/a/2019/007937 sin Historico.
-2024-12-08 00:02:23 - [Backend] - INFO - Job 3, scraper Historico, completed successfully
-2024-12-08 00:02:25 - scrapper - [Notificacion] - INFO - Clic en Búsqueda en fichas
-2024-12-08 00:02:25 - scrapper - [Notificacion] - INFO - Iniciando el proceso de búsqueda del noExpediente: MX/a/2019/007937
-2024-12-08 00:02:32 - scrapper - [Notificacion] - INFO - Búsqueda iniciada para el noExpediente: MX/a/2019/007937
-2024-12-08 00:02:44 - scrapper - [Notificacion] - INFO - El número de solicitud/Expediente es: MX/a/2019/007937
-2024-12-08 00:02:45 - scrapper - [Notificacion] - INFO - El número de solicitud/Expediente es: MX/a/2019/007937
-2024-12-08 00:02:45 - scrapper - [Notificacion] - INFO - El número de solicitud/Expediente es: MX/a/2019/007937
-2024-12-08 00:02:46 - scrapper - [Notificacion] - INFO - El número de solicitud/Expediente es: MX/a/2019/007937
-2024-12-08 00:02:46 - scrapper - [Notificacion] - INFO - El número de solicitud/Expediente es: MX/a/2019/007937
-2024-12-08 00:02:47 - scrapper - [Notificacion] - INFO - El número de solicitud/Expediente es: MX/a/2019/007937
-2024-12-08 00:02:48 - scrapper - [Notificacion] - INFO - El número de solicitud/Expediente es: MX/a/2019/007937
-2024-12-08 00:02:48 - scrapper - [Notificacion] - INFO - El número de solicitud/Expediente es: MX/a/2019/007937
-2024-12-08 00:02:48 - scrapper - [Notificacion] - INFO - Scrapeo exitoso para noExpediente: MX/a/2019/007937
-2024-12-08 00:02:48 - scrapper - [Notificacion] - INFO - FINALIZANDO - Fecha y Hora: 2024-12-08 00:02:48
-2024-12-08 00:02:49 - scrapper - [Notificacion] - INFO - Cerrando el navegador
-2024-12-08 00:02:55 - [Backend] - INFO - Job 2, scraper Notificaciones, completed successfully
-2024-12-08 00:02:55 - [Backend] - INFO - Procesando la informacion del expediente 'MX/a/2019/007937'
-2024-12-08 00:02:56 - [Backend] - INFO - No existen historicos relacionados al MX/a/2019/007937, no se puede procesar la informacion
+2024-12-08 02:05:55 - [Backend] - INFO - Se reiniciaron los logs diarios
+2024-12-08 02:06:07 - [Backend] - INFO - Hora de ejecucion del scraper Seeder: 4:43:56 AM
+2024-12-08 02:06:07 - [Backend] - INFO - Hora de ejecucion del scraper Historico: 9:59:02 AM
+2024-12-08 02:06:07 - [Backend] - INFO - Hora de ejecucion del scraper Expediente: 9:36:48 PM
+2024-12-08 02:06:30 - [Backend] - INFO - Aplicación inciada correctamente
+2024-12-08 02:06:34 - [Backend] - INFO - Connection has been established successfully
