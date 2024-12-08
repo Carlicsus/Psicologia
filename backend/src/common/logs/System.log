@@ -1052,3 +1052,15 @@ Driver info: driver.version: unknown
 2024-12-08 03:24:47 - [Backend] - INFO - Hora de ejecucion del scraper Expediente: 8:50:49 PM
 2024-12-08 03:24:49 - [Backend] - INFO - Aplicación inciada correctamente
 2024-12-08 03:24:49 - [Backend] - INFO - Unable to connect to the database 
+2024-12-08 03:26:19 - [Backend] - INFO - Se reiniciaron los logs diarios
+2024-12-08 03:26:22 - [Backend] - INFO - Hora de ejecucion del scraper Seeder: 7:31:36 AM
+2024-12-08 03:26:22 - [Backend] - INFO - Hora de ejecucion del scraper Historico: 11:45:40 AM
+2024-12-08 03:26:22 - [Backend] - INFO - Hora de ejecucion del scraper Expediente: 10:57:42 PM
+2024-12-08 03:26:24 - [Backend] - INFO - Aplicación inciada correctamente
+2024-12-08 03:26:25 - [Backend] - INFO - Unable to connect to the database 
+2024-12-08 03:33:28 - [Backend] - INFO - Se reiniciaron los logs diarios
+2024-12-08 03:33:31 - [Backend] - INFO - Hora de ejecucion del scraper Seeder: 8:46:05 AM
+2024-12-08 03:33:31 - [Backend] - INFO - Hora de ejecucion del scraper Historico: 2:29:11 PM
+2024-12-08 03:33:31 - [Backend] - INFO - Hora de ejecucion del scraper Expediente: 6:55:50 PM
+2024-12-08 03:33:33 - [Backend] - INFO - Aplicación inciada correctamente
+2024-12-08 03:33:34 - [Backend] - INFO - Connection has been established successfully
