@@ -1,6 +1,6 @@
 <div class="py-6 px-6">
   <div class="expediente-container">
-    <h1>Expedientes de Alumnos</h1>
+    <h1>Expedientes de Alumno</h1>
   
     <!-- Tabla de Angular Material -->
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
@@ -43,7 +43,7 @@
     <!-- Paginador de Angular Material -->
     <mat-paginator 
       [length]="dataSource.data.length" 
-      [pageSize]="10" 
+      [pageSize]="7" 
       [pageSizeOptions]="[5, 10, 20]"
       aria-label="Paginación">
     </mat-paginator>
