@@ -32,19 +32,21 @@ export interface IExpedientesError{
 }
 
 export interface IExpedientesAtrributes {
-    noExpediente: string;
-    fechaPresentacion: Date | null;
-    titulo: string | null;
-    resumen: string | null;
-    status: boolean;
+    matricula: number;
+    nombreCompleto: string;
+    cuatrimestre: number;
+    carrera: string;
+    correo: string;
+    telefono: number;
+    estatus: boolean;
     createdAt?: Date;
     updatedAt?: Date;
 }
 
 export interface IExpedientesCreationAttributes
-    extends Optional<IExpedientesAtrributes, 'status' | 'fechaPresentacion' | 'titulo' | 'resumen' | 'createdAt' | 'updatedAt'>{}
+    extends Optional<IExpedientesAtrributes, 'estatus' | 'createdAt' | 'updatedAt'>{}
 
 export interface IExpedientesUpdateAttributes
-    extends Optional<IExpedientesAtrributes, 'status' | 'createdAt' | 'updatedAt'>{}
+    extends Optional<IExpedientesAtrributes, 'estatus' | 'createdAt' | 'updatedAt'>{}
 
 

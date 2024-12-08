@@ -213,10 +213,6 @@ class Server {
             const fechaLimiteExpedientes = new Date();
             fechaLimiteExpedientes.setDate(fechaLimiteExpedientes.getMonth() - 6);
 
-            await ExpedientesDAO.deleteExpedeintesNoEncontrados(fechaLimiteExpedientes);
-
-            const expedientes = await ExpedientesDAO.getAllNoExpedientes();
-
 
         });
     }

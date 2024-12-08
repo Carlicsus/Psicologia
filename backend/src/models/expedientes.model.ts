@@ -7,106 +7,144 @@ import { IExpedientesAtrributes, IExpedientesCreationAttributes } from "../inter
 
 class Expedientes extends Model<IExpedientesAtrributes, IExpedientesCreationAttributes> implements IExpedientesAtrributes {
     // Propiedades privadas
-    private _noExpediente!: string;
-    private _fechaPresentacion!: Date | null;
-    private _titulo!: string | null;
-    private _resumen!: string | null;
-    private _status!: boolean
+    private _matricula!: number;
+    private _nombreCompleto!: string;
+    private _cuatrimestre!: number ;
+    private _carrera!: string;
+    private _correo!: string;
+    private _telefono!: number ;
+    private _estatus!: boolean
 
     // Getters y setters públicos
-    public get noExpediente(): string {
-        return this._noExpediente;
+    public get matricula(): number {
+        return this._matricula;
     }
 
-    public set noExpediente(value: string) {
-        this._noExpediente = value;
+    public set matricula(value: number) {
+        this._matricula = value;
     }
 
-    public get fechaPresentacion(): Date | null {
-        return this._fechaPresentacion;
+    public get nombreCompleto(): string  {
+        return this._nombreCompleto;
     }
 
-    public set fechaPresentacion(value: Date | null) {
-        this._fechaPresentacion = value;
+    public set nombreCompleto(value: string) {
+        this._nombreCompleto = value;
     }
 
-    public get titulo(): string | null {
-        return this._titulo;
+    public get cuatrimestre(): number {
+        return this._cuatrimestre;
     }
 
-    public set titulo(value: string | null) {
-        this._titulo = value;
+    public set cuatrimestre(value: number) {
+        this._cuatrimestre = value;
+    }
+    
+    public get carrera(): string  {
+        return this._carrera;
+    }
+    
+    public set carrera(value: string) {
+        this._carrera = value;
+    }
+    
+    public get correo(): string  {
+        return this._correo;
+    }
+    
+    public set correo(value: string) {
+        this._correo = value;
+    }
+    
+    public get telefono(): number {
+        return this._telefono;
     }
 
-    public get resumen(): string | null {
-        return this._resumen;
+    public set telefono(value: number) {
+        this._telefono = value;
     }
 
-    public set resumen(value: string | null) {
-        this._resumen = value;
+    public get estatus(): boolean {
+        return this._estatus;
     }
 
-    public get status(): boolean {
-        return this._status;
-    }
-
-    public set status(value: boolean) {
-        this._status = value;
+    public set estatus(value: boolean) {
+        this._estatus = value;
     }
 }
 
 // Inicializar el modelo con los atributos y la conexión sequelize
 export default Expedientes.init({
-    noExpediente: {
+    matricula: {
         type: DataTypes.STRING(20),
         primaryKey: true,
         unique: true,
         get() {
-            return this.getDataValue('noExpediente');
+            return this.getDataValue('matricula');
+        },
+        set(value: number) {
+            this.setDataValue('matricula', value);
+        }
+    },
+    nombreCompleto: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+        get() {
+            return this.getDataValue('nombreCompleto');
         },
         set(value: string) {
-            this.setDataValue('noExpediente', value);
+            this.setDataValue('nombreCompleto', value);
         }
     },
-    fechaPresentacion: {
-        type: DataTypes.DATEONLY,
-        allowNull: true,
-        get() {
-            return this.getDataValue('fechaPresentacion');
-        },
-        set(value: Date | null) {
-            this.setDataValue('fechaPresentacion', value);
-        }
-    },
-    titulo: {
+    cuatrimestre: {
         type: DataTypes.TEXT,
         allowNull: true,
         get() {
-            return this.getDataValue('titulo');
+            return this.getDataValue('cuatrimestre');
         },
-        set(value: string | null) {
-            this.setDataValue('titulo', value);
+        set(value: number) {
+            this.setDataValue('cuatrimestre', value);
         }
     },
-    resumen: {
+    carrera: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+        get() {
+            return this.getDataValue('carrera');
+        },
+        set(value: string) {
+            this.setDataValue('carrera', value);
+        }
+    },
+    correo: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+        get() {
+            return this.getDataValue('correo');
+        },
+        set(value: string) {
+            this.setDataValue('correo', value);
+        }
+    },
+    telefono: {
         type: DataTypes.TEXT,
         allowNull: true,
         get() {
-            return this.getDataValue('resumen');
+            return this.getDataValue('telefono');
         },
-        set(value: string | null) {
-            this.setDataValue('resumen', value);
+        set(value: number) {
+            this.setDataValue('telefono', value);
         }
     },
-    status:{
+    estatus:{
         type:DataTypes.BOOLEAN,
         allowNull:false,
         defaultValue:true,
         get() {
-            return this.getDataValue('status');
+            return this.getDataValue('estatus');
         },
         set(value: boolean) {
-            this.setDataValue('status', value);
+            this.setDataValue('estatus', value);
         }
     }
 }, {
