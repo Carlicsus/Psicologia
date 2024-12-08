@@ -27,9 +27,7 @@ class ExpedientesRoutes{
     }
 
     private initializeRoutes(): void {
-        this.router.post("/create", this.authMiddleware.validateToken, this.expedienteMiddleware.createExpedienteValidator, this.expedienteController.create);
-        this.router.get("/getAll", this.authMiddleware.validateToken, this.expedienteController.getAllExpedientes);
-        this.router.get("/getAllInventores", this.authMiddleware.validateToken, this.expedienteController.getAllInventores);
+        this.router.post("/create", this.authMiddleware.validateToken, this.expedienteMiddleware.createExpedienteValidator /*TODO: Algo xd*/);
     }
 
     public getRouter(): Router{

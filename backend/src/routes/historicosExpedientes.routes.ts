@@ -29,8 +29,7 @@ class HistoricosExpedientesRoutes{
     private initializeRoutes(): void {
         // TODO: Agregar el validateToken !!!!!!!!!!!!!!
         this.router.get('/getHistorico/:noExpediente',this.authMiddleware.validateToken,this.historicoMiddleware.getAllHistoricoExpedienteValidator,this.historicoController.getHistoricoExpediente);
-        this.router.get('/downloadPDF/:noExpediente/:noDocumento',this.authMiddleware.validateToken,this.historicoMiddleware.downloadPDFValidator,this.historicoController.downloadPDF)
-        this.router.post('/launch',this.authMiddleware.validateToken,this.historicoController.lauchScraperHistorico);
+        this.router.get('/downloadPDF/:noExpediente/:noDocumento',this.authMiddleware.validateToken,this.historicoMiddleware.downloadPDFValidator,this.historicoController.downloadPDF);
     }
 
     public getRouter(): Router{

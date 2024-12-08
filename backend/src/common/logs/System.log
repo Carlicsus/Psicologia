@@ -1004,3 +1004,51 @@ Driver info: driver.version: unknown
 2024-12-08 00:02:55 - [Backend] - INFO - Job 2, scraper Notificaciones, completed successfully
 2024-12-08 00:02:55 - [Backend] - INFO - Procesando la informacion del expediente 'MX/a/2019/007937'
 2024-12-08 00:02:56 - [Backend] - INFO - No existen historicos relacionados al MX/a/2019/007937, no se puede procesar la informacion
+2024-12-08 01:52:43 - [Backend] - INFO - Se reiniciaron los logs diarios
+2024-12-08 01:52:50 - [Backend] - INFO - Hora de ejecucion del scraper Seeder: 3:02:25 AM
+2024-12-08 01:52:50 - [Backend] - INFO - Hora de ejecucion del scraper Historico: 5:58:39 AM
+2024-12-08 01:52:50 - [Backend] - INFO - Hora de ejecucion del scraper Expediente: 9:38:32 PM
+2024-12-08 01:53:09 - [Backend] - INFO - Aplicación inciada correctamente
+2024-12-08 01:53:12 - [Backend] - INFO - Connection has been established successfully
+2024-12-08 02:21:22 - [Backend] - INFO - Se reiniciaron los logs diarios
+2024-12-08 02:21:29 - [Backend] - INFO - Hora de ejecucion del scraper Seeder: 7:43:43 AM
+2024-12-08 02:21:29 - [Backend] - INFO - Hora de ejecucion del scraper Historico: 3:32:17 PM
+2024-12-08 02:21:29 - [Backend] - INFO - Hora de ejecucion del scraper Expediente: 10:51:17 PM
+2024-12-08 02:21:42 - [Backend] - INFO - Aplicación inciada correctamente
+2024-12-08 02:21:58 - [Backend] - INFO - Unable to connect to the database 
+2024-12-08 02:47:13 - [Backend] - INFO - Se reiniciaron los logs diarios
+2024-12-08 02:47:18 - [Backend] - INFO - Hora de ejecucion del scraper Seeder: 7:41:33 AM
+2024-12-08 02:47:18 - [Backend] - INFO - Hora de ejecucion del scraper Historico: 12:47:05 PM
+2024-12-08 02:47:18 - [Backend] - INFO - Hora de ejecucion del scraper Expediente: 7:44:15 PM
+2024-12-08 02:47:28 - [Backend] - INFO - Aplicación inciada correctamente
+2024-12-08 02:47:28 - [Backend] - INFO - Unable to connect to the database 
+2024-12-08 03:10:31 - [Backend] - INFO - Se reiniciaron los logs diarios
+2024-12-08 03:10:33 - [Backend] - INFO - Hora de ejecucion del scraper Seeder: 8:36:52 AM
+2024-12-08 03:10:33 - [Backend] - INFO - Hora de ejecucion del scraper Historico: 3:31:02 PM
+2024-12-08 03:10:33 - [Backend] - INFO - Hora de ejecucion del scraper Expediente: 8:43:01 PM
+2024-12-08 03:10:35 - [Backend] - INFO - Aplicación inciada correctamente
+2024-12-08 03:10:36 - [Backend] - INFO - Connection has been established successfully
+2024-12-08 03:15:12 - [Backend] - INFO - Se reiniciaron los logs diarios
+2024-12-08 03:15:16 - [Backend] - INFO - Hora de ejecucion del scraper Seeder: 4:35:12 AM
+2024-12-08 03:15:16 - [Backend] - INFO - Hora de ejecucion del scraper Historico: 4:29:58 PM
+2024-12-08 03:15:16 - [Backend] - INFO - Hora de ejecucion del scraper Expediente: 9:50:48 PM
+2024-12-08 03:15:18 - [Backend] - INFO - Aplicación inciada correctamente
+2024-12-08 03:15:19 - [Backend] - INFO - Unable to connect to the database 
+2024-12-08 03:19:44 - [Backend] - INFO - Se reiniciaron los logs diarios
+2024-12-08 03:19:47 - [Backend] - INFO - Hora de ejecucion del scraper Seeder: 4:25:11 AM
+2024-12-08 03:19:47 - [Backend] - INFO - Hora de ejecucion del scraper Historico: 11:39:10 AM
+2024-12-08 03:19:47 - [Backend] - INFO - Hora de ejecucion del scraper Expediente: 11:54:44 PM
+2024-12-08 03:19:51 - [Backend] - INFO - Aplicación inciada correctamente
+2024-12-08 03:19:52 - [Backend] - INFO - Unable to connect to the database 
+2024-12-08 03:21:39 - [Backend] - INFO - Se reiniciaron los logs diarios
+2024-12-08 03:21:41 - [Backend] - INFO - Hora de ejecucion del scraper Seeder: 7:46:51 AM
+2024-12-08 03:21:41 - [Backend] - INFO - Hora de ejecucion del scraper Historico: 1:40:27 PM
+2024-12-08 03:21:41 - [Backend] - INFO - Hora de ejecucion del scraper Expediente: 11:15:32 PM
+2024-12-08 03:21:43 - [Backend] - INFO - Aplicación inciada correctamente
+2024-12-08 03:21:43 - [Backend] - INFO - Unable to connect to the database 
+2024-12-08 03:24:45 - [Backend] - INFO - Se reiniciaron los logs diarios
+2024-12-08 03:24:47 - [Backend] - INFO - Hora de ejecucion del scraper Seeder: 6:03:43 AM
+2024-12-08 03:24:47 - [Backend] - INFO - Hora de ejecucion del scraper Historico: 4:57:01 PM
+2024-12-08 03:24:47 - [Backend] - INFO - Hora de ejecucion del scraper Expediente: 8:50:49 PM
+2024-12-08 03:24:49 - [Backend] - INFO - Aplicación inciada correctamente
+2024-12-08 03:24:49 - [Backend] - INFO - Unable to connect to the database 

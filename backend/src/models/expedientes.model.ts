@@ -1,12 +1,9 @@
 import { DataTypes, Model } from "sequelize";
 import ConnectionDatabaseService from "../db/connections";
 import loggerService from "../helpers/loggerService";
-import { Institutos, SolicitantesExpedientes, Inventores, InventoresExpedientes } from "./index.model";
+import {} from "./index.model";
 import { IExpedientesAtrributes, IExpedientesCreationAttributes } from "../interfaces/expedientes.interface";
-import InstitutosDAO from '../dao/institutos.dao'
-import SolicitantesExpedientesDAO from '../dao/solicitantesExpedientes.dao'
-import InventoresDAO from "../dao/inventores.dao";
-import InventoresExpedientesDAO from "../dao/inventoresExpedientes.dao";
+
 
 class Expedientes extends Model<IExpedientesAtrributes, IExpedientesCreationAttributes> implements IExpedientesAtrributes {
     // Propiedades privadas
