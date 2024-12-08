@@ -1,0 +1,149 @@
+####version: Se usa la version 3.9 de docker-compose para hacer uso del healthcheck
+####services: Dentro de services se indican los nombres de los contenedores a crear (Nota: Deben de estar correctamente indentados)
+####restart: Sirve para indicar cuando debe de ser reiniciado el docker
+####depens_on: Se especifica que este docker hace uso de los servicios de un docker externo y debe ser construido despues de la construcciónn de dicho docker 
+####build: Se indica que este docker va a usar un Dockerfile para construir el docker (Dentro de Dockerfile se especifica la imagen a usar y que caracteristicas extras requiere el docker)
+####volumes: Son usados para conectar una ruta del docker a una del anfitrion para diferentes motivos
+####image: Se especifica que se hara uso de una imagen ya construida y no es necesario una configuracion 
+####enviroment: Se especifican configuraciones para la imagen a usar 
+
+version: '3.9'
+services:
+
+  #Configuracion para el docker de "redis"
+  redis:
+    image: redis:7.4-rc1
+    restart: always
+    ports:
+      - '6378:6379'
+    command: redis-server --loglevel warning --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - redis-data:/data
+    
+
+  #Configuracion para el docker "backend"
+  backend:
+    #Se especifica que el docker debe de reiniciarse si ocurre algun error o un reinicio en el host
+    restart: always
+    #Este docker hace uso del docker "database" por ende se especifica que debe de ser construido despues de este 
+    depends_on:
+      - database
+    build:
+      #Se usara el Dockerfile ubicado en la raiz de la carpeta "/backend"
+      context: ./backend
+      dockerfile: Dockerfile.dev
+      #Se agregan variables de entorno
+      args:
+        - PORT_SERVER= ${PORT_SERVER}
+        - SECRET_KEY= ${SECRET_KEY}
+        - POSTGRES_USER= ${POSTGRES_USER}
+        - POSTGRES_PASSWORD= ${POSTGRES_PASSWORD}
+        - POSTGRES_DB= ${POSTGRES_DB}
+        - POSTGRES_HOST= ${POSTGRES_HOST}
+        - POSTGRES_PORT= ${POSTGRES_PORT}
+        - NODEMAILER_HOST= ${NODEMAILER_HOST}
+        - NODEMAILER_PORT= ${NODEMAILER_PORT}
+        - NODEMAILER_USER= ${NODEMAILER_USER}
+        - NODEMAILER_PASSWORD= ${NODEMAILER_PASSWORD}
+        - USUARIO_ADMIN= ${USUARIO_ADMIN}
+        - NOMBRES_ADMIN= ${NOMBRES_ADMIN}
+        - APELLIDOS_ADMIN= ${APELLIDOS_ADMIN}
+        - CONTRASENA_ADMIN= ${CONTRASENA_ADMIN}
+        - EMAIL_ADMIN= ${EMAIL_ADMIN}
+        - APP_URL= ${APP_URL}
+        - APP_PORT= ${APP_PORT}
+        - REDIS_HOST= ${REDIS_HOST}
+        - REDIS_PORT= ${REDIS_PORT}
+        - REDIS_PASSWORD= ${REDIS_PASSWORD}
+
+    env_file:
+      - .env
+    volumes:
+      #Este es un volumen se usa para que si hay un cambio en algun archivo de la carpeta "/backend" igual se vea reflejado en la carpta del proyecto en el docker
+      - ./backend:/usr/local/apps/myapp/dev
+      #Este volumen sirve para que los node_modules no choquen entre si 
+      - ignore:/usr/local/apps/myapp/dev/node_modules/
+
+  #Configuracion para el docker "database"
+  database:
+    #Se usa la imagen de postgres mas acual a dia de hoy (22/05/2024)
+    image: postgres:16.3
+    #Se especifica que el docker debe de reiniciarse si ocurre algun error o un reinicio en el host
+    restart: always
+    #Las credenciales estan en el archivo .env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      TZ: America/Mexico_City
+    #Se enruta el puerto "5432" del docker al puerto "5433" del anfitrion
+    ports:
+      - 5433:5432
+    volumes:
+    #Este es un volumen nombrado, sirve para la persistencia de los datos de la base de datos
+      - postgres-data:/var/lib/postgresql/data
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+
+  #Configuracion para el docker "frontend"
+  frontend:
+    #Este docker sera construido en base a un archivo Dockerfile ubicado en la raiz de la carpeta "/frontend""
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    environment:
+      - NODE_OPTIONS=--max_old_space_size=4096
+    volumes:
+      #Se especifica un volumen para que los cambios en el anfitrion sean reflejados tambien en la ubicacion del proyecto en docker
+      - ./frontend:/usr/local/apps/myapp/dev
+      #Se especifica un volumen para que los node_modules no choquen entre si
+      - exclude:/usr/local/apps/myapp/dev/node_modules/
+
+  #Configuracion para el docker "nginx" este se encargara de hacer "vivir" el back y el front en un mismo sitio
+  nginx:
+    #Se especifica que este docker hara uso del docker "backend" y "frontend" asi que debe de esperar su construcción
+    depends_on:
+      - backend
+      - frontend
+      - scraperSeeder
+    #Este docker debe de reciniciarse si hay un error o un reincio en el host
+    restart: always
+    #Se construira en base a un Dockerfile ubicado en la raiz de la carpeta "/nginx" (Dentro de .config viene la configuracion usando el docker "frontend y backend")
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile.dev
+    #Se enruta el puerto en el que corre nginx al 3050 del anfitrion
+    ports:
+      - "3050:80"
+
+  #Configuracion para el docker "selenium" (Dentro de este viene toda la configuracion de un chrome para test) 
+  scraperSeeder:
+    #Se usa una imagen de selenium chrome la mas actual a la fecha de hoy
+    image: selenium/standalone-chrome:122.0
+    environment:
+      VNC_PASSWORD: ${PASSWORD_VNC_SEEDER}
+
+  scraperHistorico:
+    #Se usa una imagen de selenium chrome la mas actual a la fecha de hoy
+    image: selenium/standalone-chrome:122.0
+    environment:
+      VNC_PASSWORD: ${PASSWORD_VNC_HISTORICO}
+    ports:
+      #El puerto 7900 es importante ya que desde el podremos ver todo lo que realiza el scraper 
+      - "7902:7900"
+
+  scraperNotificacion:
+    #Se usa una imagen de selenium chrome la mas actual a la fecha de hoy
+    image: selenium/standalone-chrome:122.0
+    environment:
+      VNC_PASSWORD: ${PASSWORD_VNC_EXPEDIENTES}
+    ports:
+      #El puerto 7900 es importante ya que desde el podremos ver todo lo que realiza el scraper 
+      - "7903:7900"
+
+volumes:
+  #Estos son volumenes nombrados que son usados en la construccion de los dockers anteriores
+  postgres-data:
+  redis-data:
+  ignore:
+  exclude:

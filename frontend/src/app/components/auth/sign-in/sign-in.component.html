@@ -1,0 +1,115 @@
+<div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+    <mat-card class="w-full bg-white rounded-xl shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+      <mat-card-header class="card_title p-6 mb-4">
+        <mat-card-title class="text-xl font-bold text-black">Registrar</mat-card-title>
+      </mat-card-header>
+  
+      <mat-card-content class="p-6">
+        <form class="grid grid-cols-2 md:grid-cols-1 gap-4" [formGroup]="formGroup">
+  
+          <mat-form-field class="col-span-2 ">
+            <mat-label><mat-icon>face</mat-icon> Nombre(s)</mat-label> 
+            <input matInput type="text" formControlName="nombres"/>
+            @if(nombresInput.hasError('required')) {
+              <mat-error>Debes ingresar tu nombre</mat-error>
+            }
+            @if(!nombresInput.hasError('required') && nombresInput.hasError('validarEspaciosBlanco')) {
+              <mat-error>El nombre no puede contener espacios en blanco al principio o al final</mat-error>
+            }
+            @if(!nombresInput.hasError('required') && nombresInput.hasError('validarNombreApellidos')) {
+              <mat-error>Los nombres solo pueden contener letras y ningún espacio doble</mat-error>
+            }
+            @if(!nombresInput.hasError('required') && nombresInput.hasError('validarEspaciosEntreCaracter')) {
+              <mat-error>No puede haber espacios dobles entre nombres</mat-error>
+            }
+          </mat-form-field>
+  
+          <mat-form-field class="col-span-2 ">
+            <mat-label><mat-icon>face</mat-icon> Apellido(s)</mat-label>
+            <input matInput type="text" formControlName="apellidos"/>
+            @if(apellidosInput.hasError('required')) {
+              <mat-error>Debes ingresar al menos un apellido</mat-error>
+            }
+            @if(!apellidosInput.hasError('required') && apellidosInput.hasError('validarEspaciosBlanco')) {
+              <mat-error>Los apellidos no pueden contener espacios en blanco al principio o al final</mat-error>
+            }
+            @if(!apellidosInput.hasError('required') && apellidosInput.hasError('validarNombreApellidos')) {
+              <mat-error>Los apellidos solo pueden contener letras y ningún espacio doble</mat-error>
+            }
+            @if(!apellidosInput.hasError('required') && apellidosInput.hasError('validarEspaciosEntreCaracter')) {
+              <mat-error>No puede haber espacios dobles entre apellidos</mat-error>
+            }
+          </mat-form-field>
+  
+          <mat-form-field class="col-span-2 ">
+            <mat-label><mat-icon>account_circle</mat-icon> Usuario</mat-label>
+            <input matInput type="text" formControlName="usuario"/>
+            @if(usuarioInput.hasError('required')) {
+              <mat-error>Debes ingresar un usuario</mat-error>
+            }
+            @if(!usuarioInput.hasError('required') && usuarioInput.hasError('validarEspaciosBlanco')) {
+              <mat-error>El nombre de usuario no puede contener espacios en blanco al principio o al final</mat-error>
+            }
+            @if(!usuarioInput.hasError('required') && usuarioInput.hasError('validarEspaciosDobles')) {
+              <mat-error>Los usuarios solo pueden contener letras, números, guiones bajos, puntos y ningún espacio doble</mat-error>
+            }
+            @if(!usuarioInput.hasError('required') && usuarioInput.hasError('validarEspaciosEntreCaracter')) {
+              <mat-error>No puede haber espacios dobles en el nombre de usuario</mat-error>
+            }
+          </mat-form-field>
+  
+          <mat-form-field class="col-span-2 ">
+            <mat-label><mat-icon>alternate_email</mat-icon> Correo</mat-label>
+            <input matInput type="email" formControlName="email"/>
+            @if(emailInput.hasError('email')) {
+              <mat-error>Debes ingresar un correo válido</mat-error>
+            }
+            @if(emailInput.hasError('required')) {
+              <mat-error>Debes ingresar un correo</mat-error>
+            }
+          </mat-form-field>
+  
+          <mat-form-field class="col-span-2">
+            <mat-label><mat-icon>https</mat-icon> Contraseña</mat-label>
+            <input matInput [type]="(hidePassword | async) ? 'password' : 'text'" formControlName="contrasena" (input)="onInput($event)"/>
+                    <a class="mr-2" mat-icon-button matSuffix (click)="togglePasswordVisibility($event)" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword | async">
+                        <mat-icon>{{(hidePassword | async) ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </a>
+            @if(contrasenaInput.hasError('required')) {
+              <mat-error>Ingresa una contraseña</mat-error>
+              }
+            @if(!contrasenaInput.hasError('required') && contrasenaInput.hasError('customContrasenaValidator')) {
+              <mat-error>La contraseña debe tener al menos 8 caracteres, una mayúscula, minúscula y un número</mat-error>
+            }
+          </mat-form-field>
+  
+          <mat-form-field class="col-span-2">
+            <mat-label><mat-icon>https</mat-icon> Repetir Contraseña</mat-label>
+            <input matInput [type]="(hidePassword | async) ? 'password' : 'text'" formControlName="repetirContrasena"/>
+            @if(repetirContrasenaInput.hasError('required')) {
+              <mat-error>Repite tu contraseña</mat-error>
+            }
+            @if(!repetirContrasenaInput.hasError('required') && repetirContrasenaInput.hasError('repetirContrasenaValidator')) {
+              <mat-error>Las contraseñas no coinciden</mat-error>
+            }
+            
+          </mat-form-field>
+  
+          <div class="col-span-2">
+            <button mat-raised-button color="primary" class="w-full" [disabled]="disabled" (click)="addUser()">Registrar</button>
+          </div>
+          <div class="col-span-2">
+            <p class="text-sm font-light text-gray-500 dark:text-gray-400">
+                Ya tienes una cuenta? <a routerLink="/login" class="font-medium text-primary-600 hover:underline dark:text-primary-500">Iniciar sesión</a>
+                </p>
+          </div>
+        </form>
+        @if(loading) {
+          <div class="flex items-center justify-center mt-4">
+              <app-spinner></app-spinner>
+          </div>
+        }
+      </mat-card-content>
+    </mat-card>
+  </div>
+  

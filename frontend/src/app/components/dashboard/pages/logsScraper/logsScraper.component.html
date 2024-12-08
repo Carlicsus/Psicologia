@@ -1,0 +1,43 @@
+<section class="mb-4 w-full flex justify-center">
+  <div class="overflow-x-auto">
+    <mat-button-toggle-group #group="matButtonToggleGroup" [value]="selectedVal" (change)="onValChange(group.value)" aria-label="Font Style">
+      <mat-button-toggle value="backend">Backend</mat-button-toggle>
+      <mat-button-toggle value="seeders">Scraper Seeder</mat-button-toggle>
+      <mat-button-toggle value="historico">Scraper Historico</mat-button-toggle>
+      <mat-button-toggle value="notificacion">Scraper Notificación</mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+</section>
+  
+<div class="flex justify-center items-center">
+  <div class="w-full max-w-screen-2xl">
+    <div class="bg-gray-900 text-white font-mono p-4 rounded-lg shadow-lg">
+      <div class="mb-2">
+        <span class="text-green-500">userSystem:~$</span>
+        <span class="text-blue-500"> echo "Logs {{ selectedVal }} "</span>
+      </div>
+      <div>
+        <span class="text-green-500">usersystem:~$</span>
+        <span class="text-white"> ls -la</span>
+      </div>
+      <div class="mt-2 bg-gray-800 p-2 rounded">
+        <div id="logsGenerales" class="text-xs h-96 max-h-96 overflow-y-auto break-words">
+          <div class="text-xs whitespace-pre-wrap break-words px-2 py-2">
+            @if (datitos.length > 0) {
+              @for(datito of datitos; track datito; let i = $index) {
+                <div class="mb-4">
+                  <p>{{ datito }}</p>
+                </div>
+              }
+            } @else {
+              - Sistema - INFO - Aún no hay logs de este scraper
+            }
+          </div>
+        </div>
+        <button mat-raised-button (click)="scrollDivBottom()">
+          <mat-icon>keyboard_arrow_down</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

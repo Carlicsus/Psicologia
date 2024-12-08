@@ -1,0 +1,49 @@
+
+  <section class="relative mx-auto w-full">
+    <nav class="flex justify-between bg-white dark:bg-gray-900 dark:text-white w-full">
+      <div class="px-5 xl:px-12 py-6 flex w-full items-center">
+        <img src="../../../assets/img/logo.png" alt="logo-utxj" class="w-20 h-12" [routerLink]="['/dashboard']">
+        <ul class="hidden md:flex px-4 mx-auto font-semibold font-heading space-x-12">
+          <li><a [routerLink]="['/dashboard']" class="hover:text-gray-200">Inicio</a></li>
+          <li><a [routerLink]="['/dashboard/register']" class="hover:text-gray-200">Registrar</a></li>
+          <li><a [routerLink]="['/dashboard/inventors']" class="hover:text-gray-200">Inventores</a></li>
+          <li><a [routerLink]="['/dashboard/notifications']" class="hover:text-gray-200">Notificaciones</a></li>
+          <li><a [routerLink]="['/dashboard/viewLogs']" class="hover:text-gray-200">Logs</a></li>
+        </ul>
+        <div class="hidden xl:flex items-center space-x-5 ml-12">
+          <button mat-raised-button (click)="openDialog('300ms', '150ms')">
+            <a class="flex items-center">
+              <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 16">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h11m0 0-4-4m4 4-4 4m-5 3H3a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h3"/>
+              </svg>
+            </a>
+          </button>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-5 mr-10">
+        <mat-icon matBadge="{{ showBadge ? '‎' : '' }}" (click)="openDialogTwo('300ms', '150ms')">notifications</mat-icon>
+        <span class="cdk-visually-hidden">lolsito</span>
+        <a (click)="toggleMenu()" class="xl:hidden flex mr-6 items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-800 dark:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </a>
+      </div>
+    </nav>
+
+    @if(menu) {
+      <div class="fixed top-4 right-4 mt-8 mr-2 z-50">
+        <div class="fixed-card w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:bg-gray-900 dark:text-white">
+          <ul class="flex flex-col space-y-2">
+            <li><a [routerLink]="['/dashboard']" class="hover:text-gray-200 dark:text-white">Inicio</a></li>
+            <li><a [routerLink]="['/dashboard/register']" class="hover:text-gray-200 dark:text-white">Registrar</a></li>
+            <li><a [routerLink]="['/dashboard/inventors']" class="hover:text-gray-200 dark:text-white">Inventores</a></li>
+            <li><a [routerLink]="['/dashboard/notifications']" class="hover:text-gray-200 dark:text-white">Notificaciones</a></li>
+            <li><a [routerLink]="['/dashboard/viewLogs']" class="hover:text-gray-200 dark:text-white">Logs</a></li>
+            <li><a (click)="openDialog('300ms', '150ms')" class="hover:text-gray-200 dark:text-white">Cerrar sesión</a></li>
+          </ul>
+        </div>
+      </div>
+    }
+  </section>

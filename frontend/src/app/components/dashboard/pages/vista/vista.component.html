@@ -1,0 +1,85 @@
+@if (notifications()) {
+  @if (allNotificaciones.length > 0) {
+    @if (!loading) {
+      <div class="flex justify-center">
+        <h2>Notificaciones</h2>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        @for (notificacion of allNotificaciones; track notificacion) {
+          <div class="max-w-lg">
+            <mat-accordion class="example-headers-align" multi>
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>{{ notificacion.noExpediente }}</mat-panel-title>
+                  <div>
+                    <mat-panel-description>
+                      Notificaciones<mat-icon>event_note</mat-icon>
+                    </mat-panel-description>
+                  </div>
+                </mat-expansion-panel-header>
+                
+                @if (notificacion.lastNotificaion) {
+                    <div class="flex justify-center">
+                      <h3><strong>Más reciente:</strong></h3>
+                    </div>
+                    <div>
+                      <div class="flex gap-4">
+                        <mat-icon>folder_open</mat-icon><p><strong>No. documento: </strong>{{ notificacion.lastNotificaion.noDocumento == null? 'Sin número de documento' : notificacion.lastNotificaion.noDocumento }}</p>
+                      </div>
+                      <div class="flex gap-4">
+                        <mat-icon>folder_open</mat-icon><p><strong>Ejemplar: </strong>{{ notificacion.lastNotificaion.ejemplar }}</p>
+                      </div>
+                      <div class="flex gap-4">
+                        <mat-icon>filter_none</mat-icon><p><strong>Gaceta </strong>{{ notificacion.lastNotificaion.gaceta }}</p>
+                      </div>
+                      <div class="flex gap-4">
+                        <mat-icon>grid_on</mat-icon><p><strong>Sección: </strong>{{ notificacion.lastNotificaion.seccion }}</p>
+                      </div>
+                      <div class="flex gap-4">
+                        <mat-icon>today</mat-icon><p><strong>Fecha de circulación: </strong>{{ notificacion.lastNotificaion.fechaCirculacion }}</p>
+                      </div>
+                      <div class="flex gap-4">
+                        <mat-icon>description</mat-icon><p><strong>Descripción: </strong>{{ notificacion.lastNotificaion.descripcionGeneralAsunto }}</p>
+                      </div>
+                      <div class="flex gap-4">
+                        <mat-icon>today</mat-icon><p><strong>Fecha de Oficio: </strong>{{ notificacion.lastNotificaion.fechaOficio == null? 'Sin fecha de oficio' : notificacion.lastNotificaion.fechaOficio }}</p>
+                      </div>
+                      <div class="flex gap-4">
+                        <mat-icon>filter_none</mat-icon><p><strong>Número de oficio: </strong>{{ notificacion.lastNotificaion.numeroOficio == null? 'Sin número de oficio' : notificacion.lastNotificaion.numeroOficio }}</p>
+                      </div>
+                    </div>
+                    <div>
+                      <button mat-raised-button (click)="verNotificaciones(notificacion.noExpediente)"  color="primary" class="float-right w-full" aria-label="Opciones">
+                        <mat-icon>more_vert</mat-icon>Ver todas
+                      </button>
+                      <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="verNotificaciones(notificacion.noExpediente)">
+                          <mat-icon>more</mat-icon>
+                          <span>Ver todas</span>
+                        </button>
+                      </mat-menu>
+                    </div>
+                } @else {
+                  <div class="flex justify-center">
+                    <p><strong>Se requiere scrapeo</strong></p>
+                  </div>
+                }
+              </mat-expansion-panel>
+            </mat-accordion>
+          </div>
+        }
+      </div>
+    }
+  } @else {
+    <div class="flex justify-center">
+      <h2>Aún no hay notificaciones resgistradas</h2>
+    </div>
+  }
+  
+  @if (loading) {
+    <div class="flex justify-center">
+      <app-spinner/>
+    </div>
+  }
+}
+<router-outlet/>

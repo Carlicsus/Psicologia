@@ -1,0 +1,10 @@
+<h2 mat-dialog-title class="text-blue-600">Cerrar sesión</h2>
+<mat-dialog-content>
+    <p class="text-sm text-gray-600">¿Cerrar sesión?</p>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <div class="py-2 px-2">
+            <button mat-raised-button mat-dialog-close>Cancelar</button>
+            <button (click)="logOut()" mat-raised-button mat-dialog-close color="primary" class="ml-3 ">Cerrar</button>
+        </div>
+</mat-dialog-actions>

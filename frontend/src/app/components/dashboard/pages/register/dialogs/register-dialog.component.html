@@ -1,0 +1,85 @@
+<div class="w-full">
+  <button class="text-black w-16 rounded-r-lg mt-4 float-right" mat-dialog-close><mat-icon>close</mat-icon></button>
+</div>
+<mat-divider/>
+<div class="Register px-4 py-3 w-full mx-auto">
+  <form [formGroup]="formGroup">
+    <div class="max-h-96 overflow-y-auto grid lg:grid-cols-2 md:grid-cols-1 gap-4">
+      <!-- Matrícula -->
+    <mat-form-field class="col-span-2">
+      <mat-label>Matrícula</mat-label>
+      <input matInput type="text" formControlName="matricula" />
+      @if (matriculaInput.hasError('required')) {
+        <mat-error>La matrícula es obligatoria</mat-error>
+      }
+      @if (!matriculaInput.hasError('required') && matriculaInput.hasError('validarMatricula')) {
+        <mat-error>La matrícula se compone de 6 números</mat-error>
+      }
+    </mat-form-field>
+  
+    <!-- Nombre Completo -->
+    <mat-form-field class="col-span-2">
+      <mat-label>Nombre(s)</mat-label>
+      <input matInput type="text" formControlName="nombreCompleto" />
+      @if (nombreInput.hasError('required')) {
+        <mat-error>El nombre es obligatorio</mat-error>
+      }
+    </mat-form-field>
+
+    <!-- Cuatrimestre -->
+    <mat-form-field class="col-span-2">
+      <mat-label>Cuatrimestre</mat-label>
+      <input matInput type="text" formControlName="cuatrimestre" />
+      @if (cuatrimestreInput.hasError('required')) {
+        <mat-error>El cuatrimestre es obligatorio</mat-error>
+      }
+      @if (!cuatrimestreInput.hasError('required') && cuatrimestreInput.hasError('validarCuatrimestre')) {
+        <mat-error>Solo hay 11 cuatrimestres</mat-error>
+      }
+    </mat-form-field>
+  
+    <!-- Carrera -->
+    <mat-form-field class="col-span-2">
+      <mat-label>Carrera</mat-label>
+      <input matInput type="text" formControlName="carrera" />
+      @if (carreraInput.hasError('required')) {
+        <mat-error>La carrera es obligatoria</mat-error>
+      }
+    </mat-form-field>
+  
+    <!-- Correo -->
+    <mat-form-field class="col-span-2">
+      <mat-label>Correo Electrónico</mat-label>
+      <input matInput type="email" formControlName="correo" />
+      @if(correoInput.hasError('email')) {
+        <mat-error>Debes ingresar un correo válido</mat-error>
+      }
+      @if(correoInput.hasError('required')) {
+        <mat-error>Debes ingresar un correo</mat-error>
+      }
+    </mat-form-field>
+  
+    <!-- Teléfono -->
+    <mat-form-field class="col-span-2">
+      <mat-label>Teléfono</mat-label>
+      <input matInput type="text" formControlName="telefono" />
+      @if(telefonoInput.hasError('required')) {
+        <mat-error>El teléfono es obligatorio</mat-error>
+      }
+      @if(!telefonoInput.hasError('required') && telefonoInput.hasError('validarTelefono')) {
+        <mat-error>El teléfono es de 10 dígitos</mat-error>
+      }
+    </mat-form-field>
+    </div>
+  
+    <!-- Botones -->
+    <div class="col-span-2 flex justify-end">
+      <button mat-raised-button mat-dialog-close color="primary" (click)="addAlumno()" [disabled]="!formGroup.valid">Registrar</button>
+      <button mat-button mat-dialog-close color="warn">Cancelar</button>
+    </div>
+  </form>
+  
+</div>
+
+  
+  

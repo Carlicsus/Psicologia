@@ -1,0 +1,71 @@
+<div>
+  <h2 class="mat-h2">Notificaciones de {{ notificacionExpediente?.noExpediente }}</h2>
+</div>
+
+<div class="flex flex-col w-full">
+  
+  <mat-form-field class="w-full">
+    <mat-label><mat-icon>youtube_searched_for</mat-icon> Búsqueda</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="MX/?/aaaa/nnnnnn" #input class="w-full">
+  </mat-form-field>
+
+  <button mat-icon-button color="primary" [routerLink]="['/dashboard/notifications']" class="text-3xl mb-3">
+    <mat-icon class="text-3xl">arrow_back</mat-icon>
+  </button>
+
+  <div class="overflow-x-auto max-w-full">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <!-- Descripción General Asunto -->
+      <ng-container matColumnDef="descripcionGeneral">
+        <th mat-header-cell *matHeaderCellDef>Descripción General</th>
+        <td mat-cell *matCellDef="let element">{{ element.descripcionGeneralAsunto }}</td>
+      </ng-container>
+      <!-- Ejemplar -->
+      <ng-container matColumnDef="ejemplar">
+        <th mat-header-cell *matHeaderCellDef>Código de Barras</th>
+        <td mat-cell *matCellDef="let element">{{ element.ejemplar }}</td>
+      </ng-container>
+      <!-- Fecha Circulación -->
+      <ng-container matColumnDef="fechaCirculacion">
+        <th mat-header-cell *matHeaderCellDef>Fecha Circulación</th>
+        <td mat-cell *matCellDef="let element">{{ element.fechaCirculacion | date }}</td>
+      </ng-container>
+      <!-- Fecha Oficio -->
+      <ng-container matColumnDef="fechaOficio">
+        <th mat-header-cell *matHeaderCellDef>Fecha Oficio</th>
+        <td mat-cell *matCellDef="let element">{{ element.fechaOficio != null? element.fechaOficio : 'Sin fecha' }}</td>
+      </ng-container>
+      <!-- Gaceta -->
+      <ng-container matColumnDef="gaceta">
+        <th mat-header-cell *matHeaderCellDef>Gaceta</th>
+        <td mat-cell *matCellDef="let element">{{ element.gaceta }}</td>
+      </ng-container>
+      <!-- No Documento -->
+      <ng-container matColumnDef="noDocumento">
+        <th mat-header-cell *matHeaderCellDef>No Documento</th>
+        <td mat-cell *matCellDef="let element">{{ element.noDocumento != null ? element.noDocumento : 'Sin documento' }}</td>
+      </ng-container>
+      <!-- No Expediente -->
+      <ng-container matColumnDef="noExpediente">
+        <th mat-header-cell *matHeaderCellDef>No Expediente</th>
+        <td mat-cell *matCellDef="let element">{{ element.noExpediente }}</td>
+      </ng-container>
+      <!-- Número Oficio -->
+      <ng-container matColumnDef="numeroOficio">
+        <th mat-header-cell *matHeaderCellDef>Número Oficio</th>
+        <td mat-cell *matCellDef="let element">{{ element.numeroOficio != null ? element.numeroOficio : 'Sin número' }}</td>
+      </ng-container>
+      <!-- Sección -->
+      <ng-container matColumnDef="seccion">
+        <th mat-header-cell *matHeaderCellDef>Sección</th>
+        <td mat-cell *matCellDef="let element">{{ element.seccion }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>
+

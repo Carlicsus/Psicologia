@@ -1,0 +1,64 @@
+<div>
+  <h2 class="mat-h2">Histórico de {{ expediente }}</h2>
+</div>
+
+<div class="flex flex-col w-full">
+  
+  <mat-form-field class="w-full">
+    <mat-label><mat-icon>youtube_searched_for</mat-icon> Búsqueda</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="MX/?/aaaa/nnnnnn" #input class="w-full">
+  </mat-form-field>
+
+  <button mat-icon-button color="primary" [routerLink]="['/dashboard/register']" class="text-3xl mb-3">
+    <mat-icon class="text-3xl">arrow_back</mat-icon>
+  </button>
+
+  <div class="overflow-x-auto max-w-full">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <!-- Número de posición -->
+      <ng-container matColumnDef="no">
+        <th mat-header-cell *matHeaderCellDef>No</th>
+        <td mat-cell *matCellDef="let element">{{ element.no }}</td>
+      </ng-container>
+      <!-- Código de Barras -->
+      <ng-container matColumnDef="codigoBarras">
+        <th mat-header-cell *matHeaderCellDef>Código de Barras</th>
+        <td mat-cell *matCellDef="let element">{{ element.codigoBarras }}</td>
+      </ng-container>
+      <!-- Documento -->
+      <ng-container matColumnDef="documento">
+        <th mat-header-cell *matHeaderCellDef>Documento</th>
+        <td mat-cell *matCellDef="let element">{{ element.noDocumento }}</td>
+      </ng-container>
+      <!-- Descripción -->
+      <ng-container matColumnDef="descripcion">
+        <th mat-header-cell *matHeaderCellDef>Descripción</th>
+        <td mat-cell *matCellDef="let element">{{ element.descripcion }}</td>
+      </ng-container>
+      <!-- Tipo -->
+      <ng-container matColumnDef="tipo">
+        <th mat-header-cell *matHeaderCellDef>Tipo</th>
+        <td mat-cell *matCellDef="let element">{{ element.tipo }}</td>
+      </ng-container>
+      <!-- Fecha -->
+      <ng-container matColumnDef="fecha">
+        <th mat-header-cell *matHeaderCellDef>Fecha</th>
+        <td mat-cell *matCellDef="let element">{{ element.fecha | date }}</td>
+      </ng-container>
+      <!-- Ver Documento -->
+      <ng-container matColumnDef="verDocumento">
+        <th mat-header-cell *matHeaderCellDef>Ver Documento</th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-button (click)="descargarPDF(element.noDocumento)">Ver <mat-icon>save_alt</mat-icon></button>
+        </td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>
+
+

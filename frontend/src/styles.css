@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+    height: 100%;
+    background-color: #c9d6ff;
+    background: linear-gradient(to right, #e2e2e2, #c9d6ff);
+}
+.wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+.logo{
+    height: 130px;
+    margin-bottom: 10px;
+}
+.body{
+    max-width: 300px;
+    width: 100%;
+    text-align: center;
+}
+
+.my-toast {
+    @apply mt-4 bg-red-500 text-white p-4 rounded-lg shadow-lg max-w-xs mx-auto sm:max-w-md md:max-w-lg lg:max-w-xl;
+}
+.my-toast-success {
+    @apply mt-4 bg-green-500 text-white p-4 rounded-lg shadow-lg max-w-xs mx-auto sm:max-w-md md:max-w-lg lg:max-w-xl;
+}
+.my-toast-caution {
+    @apply mt-4 bg-yellow-500 text-white p-4 rounded-lg shadow-lg max-w-xs mx-auto sm:max-w-md md:max-w-lg lg:max-w-xl;
+}
+.my-toast-info {
+    @apply mt-4 bg-yellow-500 text-white p-4 rounded-lg shadow-lg max-w-xs mx-auto sm:max-w-md md:max-w-lg lg:max-w-xl;
+}
+.toast-bottom-right {
+    @apply fixed right-3 w-full sm:max-w-xs sm:right-3;
+    bottom: 4rem;
+}
+@media (min-width: 640px) {
+    .toast-bottom-right {
+        bottom: 8rem;
+    }
+}
+@media (min-width: 768px) {
+    .toast-bottom-right {
+        bottom: 8rem;
+    }
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+

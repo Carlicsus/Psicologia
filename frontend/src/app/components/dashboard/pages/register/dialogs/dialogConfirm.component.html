@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>Confirmar registro</h2>
+<mat-dialog-content class="mat-typography">
+    <p>Estás a punto de registrar los siguientes expedientes:</p>
+    <ul>
+        @for(expediente of expedientes; track expediente) {
+            <li>{{ expediente.noExpediente }}</li>
+        }
+    </ul>
+    <p>¿Confirmar registro?</p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close><mat-icon>backspace</mat-icon> Cancelar</button>
+    <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="onConfirm()"><mat-icon>add_box</mat-icon> Aceptar</button>
+</mat-dialog-actions>

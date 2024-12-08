@@ -1,0 +1,279 @@
+import logging
+import datetime
+import time
+import json
+import re
+import unicodedata
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.options import Options
+from webdriver_manager.chrome import ChromeDriverManager
+from src.scrapper.config.scraper_logs import logs_scraper
+
+class scraperNotificacion:
+    def _init_(self):
+        self.logger, self.formatter_message = logs_scraper('Notificacion')
+        self.options = Options()
+        self.correctos = []
+        self.incorrectos = []
+        self.options.add_argument("--no-sandbox")
+        self.options.add_argument("--disable-dev-shm-usage")
+        self.options.add_argument("--disable-gpu")
+        self.driver = webdriver.Remote(
+            command_executor='http://scraperNotificacion:4444/wd/hub',
+            options=self.options
+        )
+        self.horarios = {}
+
+    def start_logging(self):
+        start_time = datetime.datetime.now()
+        formatted_start_time = self.formatter_message.formatTime(logging.LogRecord(
+            name='Notificacion',
+            level=logging.INFO,
+            pathname='',
+            lineno=0,
+            msg='',
+            args=(),
+            exc_info=None,
+            created=start_time.timestamp()
+        ))
+        self.logger.info(f"INICIANDO - Fecha y Hora: {formatted_start_time}")
+        self.horarios['fechaHora_inicio'] = formatted_start_time
+        return start_time, formatted_start_time
+
+    def open_website(self):
+        self.driver.get('https://siga.impi.gob.mx/')
+        self.logger.info(f'Abriendo pagina de SIGA')
+
+    def click_busqueda_en_fichas(self):
+        time.sleep(10)
+        element = WebDriverWait(self.driver, 60).until(EC.presence_of_element_located((By.XPATH, "//a[contains(text(),'Búsqueda en fichas')]")))
+        element.click()
+
+    def parse_date(self,fecha):
+        try:
+            # Cambia el formato aquí para coincidir con 'dd/mm/yyyy'
+            date_obj = datetime.datetime.strptime(fecha, "%d/%m/%Y")
+            # Formato de salida
+            formatted_date = date_obj.strftime("%Y-%m-%d")
+            return formatted_date
+        except ValueError as e:
+            raise ValueError(f"Error al parsear la fecha {fecha}: {e}")
+
+    def normalize_text(self, text):
+        text = unicodedata.normalize('NFKD', text).encode('ASCII', 'ignore').decode('ASCII')
+        return text.lower()
+
+    def verify_institute(self, elements):
+        institute_pattern = re.compile(r'INSTITUTO NACIONAL DE ASTROFISICA, OPTICA Y ELECTRONICA.* \[mx\]', re.IGNORECASE)
+        found = False
+
+        for element in reversed(elements):
+            try:
+                solicitantes_label = element.find_element(By.XPATH, './/strong[contains(text(), "Solicitante(s)")]/following-sibling::span')
+                solicitantes_text = solicitantes_label.text.strip()
+
+                solicitantes_list = [s.strip() for s in solicitantes_text.split(';')]
+                for solicitante in solicitantes_list:
+                    normalized_solicitante = self.normalize_text(solicitante)
+                    if institute_pattern.search(normalized_solicitante):
+                        found = True
+                        break
+                if found:
+                    break
+            except Exception:
+                continue
+
+        return found
+    
+    def process_exp(self, exp):
+        exp_value = exp["noExpediente"]
+        fecha_circulacion = exp.get("fechaCirculacion", None)
+        if fecha_circulacion:
+            fecha_circulacion = fecha_circulacion.split("T")[0]
+        else:
+            fecha_circulacion = "Sin fechaCirculacion"
+        try:
+            self.logger.info(f'Iniciando el proceso de busqueda del noExpediente: {exp_value} y Fecha: {fecha_circulacion}')
+            time.sleep(4)
+            search_field = WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located((By.ID, 'search-term')))
+            WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.ID, 'search-term')))
+            search_field.clear()
+            search_field.send_keys(exp_value)
+            button_xpath = '//button[@mat-raised-button and @color="success" and @type="submit"]'
+            button = WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, button_xpath)))
+            button.click()
+            time.sleep(10)
+            elements = WebDriverWait(self.driver, 10).until(EC.visibility_of_all_elements_located((By.CLASS_NAME, 'div-box-shadow')))
+
+            if self.verify_institute(elements):
+                self.handle_elements(elements, exp_value)
+                self.logger.info(f"Scrapeo exitoso para noExpediente: {exp_value}")
+            else:
+                self.incorrectos.append({"noExpediente": exp_value, "msg": "Instituto no encontrado"})
+                self.logger.info(f"Scrapeo fallido para noExpediente: {exp_value}, instituto no encontrado")
+        except Exception as e:
+            self.incorrectos.append({"noExpediente": exp['noExpediente'], "msg": str(e)})
+            self.logger.error(f"Scrapeo fallido para noExpediente: {exp_value}, error: {str(e)}")
+
+    def handle_elements(self, elements, exp_value):
+        data = []
+        found_institute = False
+        processed_exp = set()
+        self.logger.info("Proceso de manejador de elementos comenzando....")
+        self.logger.info("Extrayendo Informacion...")
+
+        for index, element in enumerate(reversed(elements)):
+            try:
+                if not element.find_elements(By.TAG_NAME, 'mark'):
+                    continue
+
+                data_entry = {
+                    "ejemplar": None,
+                    "gaceta": None,
+                    "seccion": None,
+                    "fechaCirculacion": None,
+                    "descripcionGeneralAsunto": None,
+                    "fechaOficio": None,
+                    "numeroOficio": None
+                }
+
+                general_divs = element.find_elements(By.CSS_SELECTOR, '.col-12.md\\:col-6.lg\\:col-5.ng-tns-c362811556-5')
+
+                for general_div in general_divs:
+                    ejemplar = self.extract_data_from_div(general_div, "Ejemplar")
+                    if ejemplar:
+                        data_entry["ejemplar"] = ejemplar
+
+                    gaceta = self.extract_data_from_div(general_div, "Gaceta")
+                    if gaceta:
+                        data_entry["gaceta"] = gaceta
+
+                    seccion = self.extract_data_from_div(general_div, "Sección")
+                    if seccion:
+                        data_entry["seccion"] = seccion
+
+                    fecha_circulacion = self.extract_data_from_div(general_div, "Fecha Puesta Circulación")
+                    if fecha_circulacion:
+                        try:
+                            data_entry["fechaCirculacion"] = self.parse_date(fecha_circulacion)
+                        except ValueError as e:
+                            self.logger.error(e)
+
+                specific_divs = element.find_elements(By.CLASS_NAME, 'ng-tns-c362811556-5')
+
+                for specific_div in specific_divs:
+                    descripcion_general_asunto = self.extract_data_from_span(specific_div, "Descripción general del asunto")
+                    if descripcion_general_asunto:
+                        data_entry["descripcionGeneralAsunto"] = descripcion_general_asunto
+
+                    fecha_oficio = self.extract_data_from_span(specific_div, "Fecha del Oficio")
+                    if fecha_oficio:
+                        data_entry["fechaOficio"] = fecha_oficio
+
+                    numero_oficio = self.extract_data_from_span(specific_div, "Número del Oficio")
+                    if numero_oficio:
+                        data_entry["numeroOficio"] = numero_oficio
+
+                if data_entry["seccion"] == "Patentes":
+                    if data_entry["descripcionGeneralAsunto"] is None or data_entry["descripcionGeneralAsunto"].strip() == "":
+                        data_entry["descripcionGeneralAsunto"] = "Otorgamiento de Patente"
+                
+                    if exp_value not in processed_exp:
+                        self.correctos.append({"noExpediente": exp_value, "data": data, "estatus": False})
+                        processed_exp.add(exp_value)
+
+                if self.verify_institute([element]):
+                    data_entry["descripcionGeneralAsunto"] = "Publicación de solicitud"
+                    data_entry["fechaOficio"] = None
+                    data_entry["numeroOficio"] = None
+                    found_institute = True
+
+                if not found_institute:
+                    continue
+
+                try:
+                    solicitud_div = element.find_element(By.XPATH, './/strong[contains(text(), "Número de solicitud:") or contains(text(), "Expediente")]/following-sibling::span')
+                    solicitud_text = solicitud_div.text.strip()
+
+                    if solicitud_text != exp_value:
+                        continue
+
+                except Exception:
+                    continue
+
+                data.append(data_entry)
+
+            except Exception as e:
+                self.incorrectos.append({"noExpediente": exp_value, "msg": str(e)})
+
+        if data and exp_value not in processed_exp:
+            self.correctos.append({"noExpediente": exp_value, "data": data})
+            processed_exp.add(exp_value)
+    
+        self.logger.info("Proceso de manejador de elementos finalizado..")
+            
+    def extract_data_from_div(self, data_div, label):
+        try:
+            strong_elements = data_div.find_elements(By.CSS_SELECTOR, 'strong')
+            for strong_element in strong_elements:
+                if label in strong_element.text:
+                    parent_div = strong_element.find_element(By.XPATH, '..')
+                    text = parent_div.text.replace(strong_element.text, '').strip()
+                    return text
+            return None
+        except Exception:
+            return None
+        
+    def extract_data_from_span(self, data_span, label):
+        try:
+            strong_elements = data_span.find_elements(By.CSS_SELECTOR, 'strong')
+            for strong_element in strong_elements:
+                if label in strong_element.text:
+                    parent_span = strong_element.find_element(By.XPATH, '..')
+                    text = parent_span.text.replace(strong_element.text, '').strip()
+                    return text
+            return None
+        except Exception:
+            return None
+
+    def save_results(self):
+        results = {
+            "correctos": self.correctos,
+            "incorrectos": self.incorrectos,
+            "horarios": self.horarios
+        }
+        self.logger.info(f'Resultado: {results}')
+        return results
+
+    def close(self):
+        self.driver.quit()
+
+    def scraperProcess(self, expedientes):
+        start_time, formatted_start_time = self.start_logging()
+        try:
+            self.open_website()
+            self.click_busqueda_en_fichas()
+            for exp in expedientes:
+                self.process_exp(exp)
+        except Exception as e:
+            self.logger.error(f"Error general en el proceso de scraping: {str(e)}")
+        finally:
+            end_time = datetime.datetime.now()
+            formatted_end_time = self.formatter_message.formatTime(logging.LogRecord(
+                name='Notificacion',
+                level=logging.INFO,
+                pathname='',
+                lineno=0,
+                msg='',
+                args=(),
+                exc_info=None,
+                created=end_time.timestamp()
+            ))
+            self.horarios['fechaHora_fin'] = formatted_end_time
+            self.logger.info(f"FINALIZANDO - Fecha y Hora: {formatted_end_time}")
+            results = self.save_results()
+            self.close()
+            return results

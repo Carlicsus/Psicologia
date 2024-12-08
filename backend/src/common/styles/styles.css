@@ -1,0 +1,109 @@
+.email-container {
+  max-width: 28rem;
+  margin: 0 auto;
+  padding: 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  overflow: hidden; /* Previene el desbordamiento */
+}
+
+.email-header {
+  text-align: center;
+  padding: 0.75rem;
+  background-color: #0d1b2a;
+  border-bottom: 1px solid #d1d5db;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+
+.email-header h1 {
+  color: white;
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.email-body {
+  padding: 1rem;
+  background-color: #c9d6ff;
+}
+
+.email-body p {
+  font-size: 1rem;
+  padding-bottom: 0;
+  color: #4b5563;
+  margin: 0; /* Asegura que no haya márgenes adicionales */
+}
+
+.email-button {
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.email-button a {
+  font-size: 1rem;
+  color: white;
+  text-decoration: none;
+  background-color: #023e8a;
+  padding: 0.4rem 0.75rem;
+  border-radius: 0.25rem;
+  display: inline-block;
+}
+
+.email-footer {
+  padding: 1rem;
+  text-align: center;
+  border-top: 1px solid #fff;
+  background-color: #83c5be;
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+}
+
+.email-footer p {
+  color: #1f2937;
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+.card-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.card {
+  box-sizing: border-box;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.25rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  overflow: hidden; /* Evita el desbordamiento del contenido */
+}
+
+.card-content {
+  padding: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.overflow-y-auto {
+  max-height: 3rem;
+  max-width: 100%;
+  overflow-y: auto;
+  overflow-wrap: break-word; /* Asegura que el texto largo se ajuste */
+  word-wrap: break-word; /* Para compatibilidad con navegadores antiguos */
+}
+
+.email-footer-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* Una sola columna */
+  gap: 0.5rem; /* Espacio entre los elementos */
+  overflow-wrap: break-word; /* Asegura que el texto largo se ajuste */
+  word-break: break-word; /* Para compatibilidad con navegadores antiguos */
+}
+
+.email-footer-grid p {
+  margin-bottom: 0.2rem; /* Ajusta el espacio inferior como desees */
+}
