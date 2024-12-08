@@ -51,6 +51,7 @@ export default class RegisterComponent implements OnInit, AfterViewInit {
     'correo',
     'telefono',
     'estatus',
+    'acciones'
   ];
   protected dataSource = new MatTableDataSource<Alumno>(this.listAlumnos);
   protected readonly dialog = inject(MatDialog);

@@ -31,35 +31,10 @@ export const routes: Routes = [
                 canActivate:[authGuard],
             },
             {
-                path: 'viewLogs',
-                title: 'Logs Sistema',
-                loadComponent: () => import('./components/dashboard/pages/logsScraper/logsScraper.component'),
-                canActivate:[authGuard]
-            },
-            {
                 path: 'vidoc/:noExpediente',
                 title: 'Vidoc de expediente',
                 loadComponent: () => import('./components/dashboard/pages/vidoc/vidoc.component'),
                 canActivate:[authGuard]
-            },
-            {
-                path: 'inventors',
-                title: 'Inventores',
-                loadComponent: () => import('./components/dashboard/pages/inventors/inventors.component'),
-                canActivate:[authGuard]
-            },
-            {
-              path: 'notifications',
-              title: 'Notificaciones',
-              loadComponent: () => import('./components/dashboard/pages/vista/vista.component'),
-              canActivate: [authGuard],
-              children: [
-                {
-                    path: 'allNotifications/:noExpediente',
-                    title: 'Notificaciones',
-                    loadComponent: () => import('./components/dashboard/pages/vista/notificationsExpediente/notificationsExpediente.component')
-                }
-              ]
             },
             {
                 path: '**',
