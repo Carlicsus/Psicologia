@@ -16,6 +16,7 @@ import loggerService from "../helpers/loggerService";
 import { Expedientes, HistoricosExpedientes, Usuarios } from "../models/index.model";
 import ExpedientesRoutes from '../routes/expedientes.routes';
 import HistoricosExpedientesRoutes from '../routes/historicosExpedientes.routes';
+import AlumnosRoutes from '../routes/alumnos.routes';
 import UsuarioRoutes from '../routes/usuarios.routes';
 import usuariosSeed from '../seeders/usuarios.seeder';
 import HistoricosExpedientesDAO from '../dao/historicosExpedientes.dao';
@@ -79,6 +80,7 @@ class Server {
         this.app.use("/api/users", UsuarioRoutes.getRouter());
         this.app.use("/api/expedientes", ExpedientesRoutes.getRouter());
         this.app.use('/api/historico', HistoricosExpedientesRoutes.getRouter());
+        this.app.use('/api/alumnos', AlumnosRoutes.getRouter());
     }
 
     // Configuracion de los middlewares del servidor

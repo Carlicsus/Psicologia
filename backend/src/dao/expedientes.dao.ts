@@ -1,6 +1,6 @@
 import { Op } from 'sequelize';
 import loggerService from '../helpers/loggerService';
-import { xd, IExpedientesAtrributes, IExpedientesCreationAttributes, IExpedientesOnlyNoExpediente, IExpedientesUpdateAttributes } from '../interfaces/expedientes.interface';
+import { IExpedientesAtrributes, IExpedientesCreationAttributes, IExpedientesUpdateAttributes } from '../interfaces/expedientes.interface';
 import { Expedientes } from '../models/index.model';
 import { InventorData } from '../interfaces/email.interface';
 

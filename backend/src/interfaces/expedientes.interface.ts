@@ -3,6 +3,7 @@ import { Optional } from "sequelize";
 export interface IExpedientesAtrributes {
     noExpediente: string;
     matricula: number;
+    usuario: string;
     fecha: Date;
     tipo: string;
     estatus: boolean;

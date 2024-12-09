@@ -8,9 +8,9 @@ class HistoricosExpedientes extends Model<IHistoricosExpedientesAttributes, IHis
     // Propiedades privadas
     private _noDocumento!: string;
     private _noExpediente!: string;
-    private _codigoBarras!: string;
-    private _descripcion!: string;
-    private _tipo!: string;
+    private _secion!: number;
+    private _resumen!: string;
+    private _actividad!: string | null;
     private _fecha!: Date;
 
     // Getters y setters públicos
@@ -30,28 +30,28 @@ class HistoricosExpedientes extends Model<IHistoricosExpedientesAttributes, IHis
         this._noExpediente = value;
     }
 
-    public get codigoBarras(): string {
-        return this._codigoBarras;
+    public get secion(): number {
+        return this._secion;
     }
 
-    public set codigoBarras(value: string) {
-        this._codigoBarras = value;
+    public set secion(value: number) {
+        this._secion = value;
     }
 
-    public get descripcion(): string {
-        return this._descripcion;
+    public get resumen(): string {
+        return this._resumen;
     }
 
-    public set descripcion(value: string) {
-        this._descripcion = value;
+    public set resumen(value: string) {
+        this._resumen = value;
     }
 
-    public get tipo(): string {
-        return this._tipo;
+    public get actividad(): string | null {
+        return this._actividad;
     }
 
-    public set tipo(value: string) {
-        this._tipo = value;
+    public set actividad(value: string | null) {
+        this._actividad = value;
     }
 
     public get fecha(): Date {
@@ -89,34 +89,34 @@ export default HistoricosExpedientes.init({
             this.setDataValue('noExpediente', value);
         }
     },
-    codigoBarras: {
-        type: DataTypes.STRING(255),
+    secion: {
+        type: DataTypes.INTEGER,
         allowNull: false,
         get() {
-            return this.getDataValue('codigoBarras');
+            return this.getDataValue('secion');
         },
-        set(value: string) {
-            this.setDataValue('codigoBarras', value);
+        set(value: number) {
+            this.setDataValue('secion', value);
         }
     },
-    descripcion: {
+    resumen: {
         type: DataTypes.TEXT,
         allowNull: false,
         get() {
-            return this.getDataValue('descripcion');
+            return this.getDataValue('resumen');
         },
         set(value: string) {
-            this.setDataValue('descripcion', value);
+            this.setDataValue('resumen', value);
         }
     },
-    tipo: {
+    actividad: {
         type: DataTypes.TEXT,
-        allowNull: false,
+        allowNull: true,
         get() {
-            return this.getDataValue('tipo');
+            return this.getDataValue('actividad');
         },
-        set(value: string) {
-            this.setDataValue('tipo', value);
+        set(value: string | null) {
+            this.setDataValue('actividad', value);
         }
     },
     fecha: {

@@ -1,7 +1,7 @@
 import { DataTypes, Model } from "sequelize";
 import ConnectionDatabaseService from "../db/connections";
 import loggerService from "../helpers/loggerService";
-import { Alumnos } from "./index.model";
+import { Alumnos, Usuarios } from "./index.model";
 import { IExpedientesAtrributes, IExpedientesCreationAttributes } from "../interfaces/expedientes.interface";
 
 
@@ -9,6 +9,7 @@ class Expedientes extends Model<IExpedientesAtrributes, IExpedientesCreationAttr
     // Propiedades privadas
     private _noExpediente!: string;
     private _matricula!: number;
+    private _usuario!: string;
     private _fecha!: Date;
     private _tipo!: string ;
     private _estatus!: boolean
@@ -28,6 +29,14 @@ class Expedientes extends Model<IExpedientesAtrributes, IExpedientesCreationAttr
 
     public set matricula(value: number) {
         this._matricula = value;
+    }
+
+    public get usuario(): string {
+        return this._usuario;
+    }
+
+    public set usuario(value: string) {
+        this._usuario = value;
     }
 
     public get fecha(): Date  {
@@ -80,6 +89,20 @@ export default Expedientes.init({
         },
         set(value: string) {
             this.setDataValue('noExpediente', value);
+        }
+    },
+    usuario: {
+        type: DataTypes.TEXT,
+        references: {
+            model: Usuarios,
+            key: 'usuario'
+        },
+        allowNull: false,
+        get() {
+            return this.getDataValue('usuario');
+        },
+        set(value: string) {
+            this.setDataValue('usuario', value);
         }
     },
     fecha: {
