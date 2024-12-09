@@ -13,12 +13,13 @@ import UsuariosDAO from "../dao/usuarios.dao";
 import ConnectionDatabaseService from "../db/connections";
 import Horarios from "../helpers/horarios";
 import loggerService from "../helpers/loggerService";
-import { Expedientes, HistoricosExpedientes, Usuarios } from "../models/index.model";
+import { Alumnos, Expedientes, HistoricosExpedientes, Usuarios } from "../models/index.model";
 import ExpedientesRoutes from '../routes/expedientes.routes';
 import HistoricosExpedientesRoutes from '../routes/historicosExpedientes.routes';
 import AlumnosRoutes from '../routes/alumnos.routes';
 import UsuarioRoutes from '../routes/usuarios.routes';
 import usuariosSeed from '../seeders/usuarios.seeder';
+import alumnosSeed from '../seeders/alumnos.seeder';
 import HistoricosExpedientesDAO from '../dao/historicosExpedientes.dao';
 import { DATE } from 'sequelize';
 
@@ -154,6 +155,7 @@ class Server {
             await ConnectionDatabaseService.getConnectionSequelize().sync();
             await Promise.all([
                 Usuarios.bulkCreate(usuariosSeed),
+                Alumnos.bulkCreate(alumnosSeed),
                 // Secciones.bulkCreate(seccionesSeeder),
                 // Gacetas.bulkCreate(gacetasSeeder),
             ]);

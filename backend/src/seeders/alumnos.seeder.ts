@@ -1,0 +1,97 @@
+import { IAlumnosCreationAttributes } from "../interfaces/alumnos.interface";
+import bcrypt from "bcrypt";
+
+const usuariosSeed: IAlumnosCreationAttributes[] = [
+  {
+    matricula: 220526,
+    nombres: "Carlos Armando",
+    apellidos: "Aranda Hernandez",
+    cuatrimestre: 7,
+    carrera: "IDGS",
+    correo: "carlicsus3@gmail.com",
+    telefono: 7491079129,
+  },
+  {
+    matricula: 220527,
+    nombres: "Diego",
+    apellidos: "Hernandez Mota",
+    cuatrimestre: 7,
+    carrera: "IDGS",
+    correo: "motilin@gmail.com",
+    telefono: 7491079130,
+  },
+  {
+    matricula: 220528,
+    nombres: "José Luis",
+    apellidos: "Martínez Sánchez",
+    cuatrimestre: 5,
+    carrera: "IDGS",
+    correo: "joseluismartinez@gmail.com",
+    telefono: 7491079131,
+  },
+  {
+    matricula: 220529,
+    nombres: "María Fernanda",
+    apellidos: "López Rodríguez",
+    cuatrimestre: 8,
+    carrera: "IDGS",
+    correo: "mariaferlopez@gmail.com",
+    telefono: 7491079132,
+  },
+  {
+    matricula: 220530,
+    nombres: "Luis Miguel",
+    apellidos: "Torres García",
+    cuatrimestre: 4,
+    carrera: "IDGS",
+    correo: "luistorres@gmail.com",
+    telefono: 7491079133,
+  },
+  {
+    matricula: 220531,
+    nombres: "Elena María",
+    apellidos: "Vázquez Fernández",
+    cuatrimestre: 9,
+    carrera: "IDGS",
+    correo: "elenavazquez@gmail.com",
+    telefono: 7491079134,
+  },
+  {
+    matricula: 220532,
+    nombres: "Carlos Eduardo",
+    apellidos: "Ramírez Díaz",
+    cuatrimestre: 3,
+    carrera: "IDGS",
+    correo: "carlosramirez@gmail.com",
+    telefono: 7491079135,
+  },
+  {
+    matricula: 220533,
+    nombres: "Sofía Margarita",
+    apellidos: "Méndez Castro",
+    cuatrimestre: 2,
+    carrera: "IDGS",
+    correo: "sofia.mendez@gmail.com",
+    telefono: 7491079136,
+  },
+  {
+    matricula: 220534,
+    nombres: "Ricardo Antonio",
+    apellidos: "Pérez Martínez",
+    cuatrimestre: 1,
+    carrera: "IDGS",
+    correo: "ricardoperez@gmail.com",
+    telefono: 7491079137,
+  },
+  {
+    matricula: 220535,
+    nombres: "Patricia Isabel",
+    apellidos: "Castro García",
+    cuatrimestre: 6,
+    carrera: "IDGS",
+    correo: "patriciacastro@gmail.com",
+    telefono: 7491079138,
+  }
+]
+
+export default usuariosSeed
