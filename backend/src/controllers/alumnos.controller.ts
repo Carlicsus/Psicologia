@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
-import ExpedientesDAO from '../dao/expedientes.dao';
-import { Expedientes } from '../models/index.model';
+import AlumnosDAO from '../dao/alumnos.dao';
 
 class AlumnosController {
 
@@ -13,6 +12,11 @@ class AlumnosController {
             AlumnosController.instance = new AlumnosController();
         }
         return AlumnosController.instance;
+    }
+
+    public async getAllAlumnos(req: Request, res: Response): Promise<Response> {
+        const expedientes = await AlumnosDAO.getAllAlumnos();
+        return res.status(200).json(expedientes);
     }
 
 

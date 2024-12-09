@@ -85,26 +85,26 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
 
-  #Configuracion para el docker "frontend"
-  frontend:
-    #Este docker sera construido en base a un archivo Dockerfile ubicado en la raiz de la carpeta "/frontend""
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile.dev
-    environment:
-      - NODE_OPTIONS=--max_old_space_size=4096
-    volumes:
-      #Se especifica un volumen para que los cambios en el anfitrion sean reflejados tambien en la ubicacion del proyecto en docker
-      - ./frontend:/usr/local/apps/myapp/dev
-      #Se especifica un volumen para que los node_modules no choquen entre si
-      - exclude:/usr/local/apps/myapp/dev/node_modules/
+  # #Configuracion para el docker "frontend"
+  # frontend:
+  #   #Este docker sera construido en base a un archivo Dockerfile ubicado en la raiz de la carpeta "/frontend""
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile.dev
+  #   environment:
+  #     - NODE_OPTIONS=--max_old_space_size=4096
+  #   volumes:
+  #     #Se especifica un volumen para que los cambios en el anfitrion sean reflejados tambien en la ubicacion del proyecto en docker
+  #     - ./frontend:/usr/local/apps/myapp/dev
+  #     #Se especifica un volumen para que los node_modules no choquen entre si
+  #     - exclude:/usr/local/apps/myapp/dev/node_modules/
 
   #Configuracion para el docker "nginx" este se encargara de hacer "vivir" el back y el front en un mismo sitio
   nginx:
     #Se especifica que este docker hara uso del docker "backend" y "frontend" asi que debe de esperar su construcción
     depends_on:
       - backend
-      - frontend
+      # - frontend
     #Este docker debe de reciniciarse si hay un error o un reincio en el host
     restart: always
     #Se construira en base a un Dockerfile ubicado en la raiz de la carpeta "/nginx" (Dentro de .config viene la configuracion usando el docker "frontend y backend")

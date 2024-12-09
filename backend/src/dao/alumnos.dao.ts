@@ -1,8 +1,7 @@
 import { Op } from 'sequelize';
 import loggerService from '../helpers/loggerService';
-import { IExpedientesAtrributes, IExpedientesCreationAttributes, IExpedientesUpdateAttributes } from '../interfaces/expedientes.interface';
-import { Expedientes } from '../models/index.model';
-import { InventorData } from '../interfaces/email.interface';
+import { IAlumnosAttributes, IAlumnosMatriculaOnly } from '../interfaces/alumnos.interface';
+import { Alumnos } from '../models/index.model';
 
 class AlumnosDAO {
 
@@ -15,6 +14,11 @@ class AlumnosDAO {
       AlumnosDAO.instance = new AlumnosDAO();
     }
     return AlumnosDAO.instance;
+  }
+
+  public async getAllAlumnos(): Promise<IAlumnosMatriculaOnly[]>{
+    const alumnos = await Alumnos.findAll({attributes:['matricula', 'nombres','apellidos']});
+    return alumnos as IAlumnosMatriculaOnly[];
   }
 
 

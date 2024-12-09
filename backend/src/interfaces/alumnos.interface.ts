@@ -1,16 +1,21 @@
 import { Optional } from "sequelize";
 
 export interface IAlumnosAttributes {
-    matricula: number;
+    matricula: string;
     nombres: string;
     apellidos: string;
-    cuatrimestre: number;
+    cuatrimestre: string;
+    grupo: string;
     carrera: string;
     correo: string;
-    telefono: number;
+    telefono: string;
     estatus: boolean;
     createdAt?: Date;
     updatedAt?: Date;
+}
+
+export interface IAlumnosMatriculaOnly {
+    matricula:string;
 }
 
 export interface IAlumnosCreationAttributes

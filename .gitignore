@@ -1,4 +1,5 @@
 **/.env
 **/node_modules
 docker-compose.yml
+docker-compose-dev.yml
 backend/src/common/PDFS/historico

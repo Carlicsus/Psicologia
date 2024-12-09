@@ -8,7 +8,7 @@ import { IExpedientesAtrributes, IExpedientesCreationAttributes } from "../inter
 class Expedientes extends Model<IExpedientesAtrributes, IExpedientesCreationAttributes> implements IExpedientesAtrributes {
     // Propiedades privadas
     private _noExpediente!: string;
-    private _matricula!: number;
+    private _matricula!: string;
     private _usuario!: string;
     private _fecha!: Date;
     private _tipo!: string ;
@@ -23,11 +23,11 @@ class Expedientes extends Model<IExpedientesAtrributes, IExpedientesCreationAttr
         this._noExpediente = value;
     }
 
-    public get matricula(): number {
+    public get matricula(): string {
         return this._matricula;
     }
 
-    public set matricula(value: number) {
+    public set matricula(value: string) {
         this._matricula = value;
     }
 
@@ -78,17 +78,17 @@ export default Expedientes.init({
         }
     },
     matricula: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING(8),
         references: {
             model: Alumnos,
             key: 'matricula'
         },
         allowNull: false,
         get() {
-            return this.getDataValue('noExpediente');
+            return this.getDataValue('matricula');
         },
         set(value: string) {
-            this.setDataValue('noExpediente', value);
+            this.setDataValue('matricula', value);
         }
     },
     usuario: {

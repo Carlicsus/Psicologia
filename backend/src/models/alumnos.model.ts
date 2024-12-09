@@ -6,21 +6,22 @@ import { IAlumnosAttributes, IAlumnosCreationAttributes } from "../interfaces/al
 
 class Alumnos extends Model<IAlumnosAttributes, IAlumnosCreationAttributes> implements IAlumnosAttributes {
     // Propiedades privadas
-    private _matricula!: number;
+    private _matricula!: string;
     private _nombres!: string;
     private _apellidos!: string;
-    private _cuatrimestre!: number ;
+    private _cuatrimestre!: string ;
+    private _grupo!: string ;
     private _carrera!: string;
     private _correo!: string;
-    private _telefono!: number ;
+    private _telefono!: string ;
     private _estatus!: boolean
 
     // Getters y setters públicos
-    public get matricula(): number {
+    public get matricula(): string {
         return this._matricula;
     }
 
-    public set matricula(value: number) {
+    public set matricula(value: string) {
         this._matricula = value;
     }
 
@@ -40,12 +41,20 @@ class Alumnos extends Model<IAlumnosAttributes, IAlumnosCreationAttributes> impl
         this._apellidos = value;
     }
 
-    public get cuatrimestre(): number {
+    public get cuatrimestre(): string {
         return this._cuatrimestre;
     }
 
-    public set cuatrimestre(value: number) {
+    public set cuatrimestre(value: string) {
         this._cuatrimestre = value;
+    }
+
+    public get grupo(): string {
+        return this._grupo;
+    }
+
+    public set grupo(value: string) {
+        this._grupo = value;
     }
     
     public get carrera(): string  {
@@ -64,11 +73,11 @@ class Alumnos extends Model<IAlumnosAttributes, IAlumnosCreationAttributes> impl
         this._correo = value;
     }
     
-    public get telefono(): number {
+    public get telefono(): string {
         return this._telefono;
     }
 
-    public set telefono(value: number) {
+    public set telefono(value: string) {
         this._telefono = value;
     }
 
@@ -84,13 +93,13 @@ class Alumnos extends Model<IAlumnosAttributes, IAlumnosCreationAttributes> impl
 // Inicializar el modelo con los atributos y la conexión sequelize
 export default Alumnos.init({
     matricula: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING(8),
         primaryKey: true,
         unique: true,
         get() {
             return this.getDataValue('matricula');
         },
-        set(value: number) {
+        set(value: string) {
             this.setDataValue('matricula', value);
         }
     },
@@ -115,13 +124,23 @@ export default Alumnos.init({
         }
     },
     cuatrimestre: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING(2),
         allowNull: true,
         get() {
             return this.getDataValue('cuatrimestre');
         },
-        set(value: number) {
+        set(value: string) {
             this.setDataValue('cuatrimestre', value);
+        }
+    },
+    grupo: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+        get() {
+            return this.getDataValue('grupo');
+        },
+        set(value: string) {
+            this.setDataValue('grupo', value);
         }
     },
     carrera: {
@@ -145,19 +164,19 @@ export default Alumnos.init({
         }
     },
     telefono: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING(10),
         allowNull: true,
         get() {
             return this.getDataValue('telefono');
         },
-        set(value: number) {
+        set(value: string) {
             this.setDataValue('telefono', value);
         }
     },
     estatus:{
         type:DataTypes.BOOLEAN,
         allowNull:false,
-        defaultValue:true,
+        defaultValue:false,
         get() {
             return this.getDataValue('estatus');
         },

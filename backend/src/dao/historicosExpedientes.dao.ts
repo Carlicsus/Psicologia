@@ -1,5 +1,5 @@
 import loggerService from "../helpers/loggerService";
-import { IHistoricosExpedientesAttributes, IHistoricosExpedientesCreationAttributes, IHistoricosExpedientesForRelations, IHistoricosExpedientesLastRecord } from "../interfaces/historicosExpedientes.interface";
+import { IHistoricosExpedientesAttributes, IHistoricosExpedientesCreationAttributes } from "../interfaces/historicosExpedientes.interface";
 import { Expedientes, HistoricosExpedientes } from "../models/index.model";
 import ExpedientesDAO from './expedientes.dao';
 

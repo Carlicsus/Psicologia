@@ -27,7 +27,7 @@ class AlumnosRoutes {
   }
 
   private initializeRoutes(): void {
-    this.router.post("/create", this.authMiddleware.validateToken, /*TODO: Algo xd*/);
+    this.router.get("/getAll", /*this.authMiddleware.validateToken,*/ this.alumnoController.getAllAlumnos);
   }
 
   public getRouter(): Router {
