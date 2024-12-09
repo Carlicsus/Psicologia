@@ -1,49 +1,57 @@
-<div class="py-6 px-6">
+<div>
   <div class="expediente-container">
-    <h1>Expedientes de Alumnos</h1>
+    <h1>Expedientes de alumno</h1>
   
-    <!-- Tabla de Angular Material -->
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-  
-      <!-- No. Expediente -->
-      <ng-container matColumnDef="noExpediente">
-        <th mat-header-cell *matHeaderCellDef>No. Expediente</th>
-        <td mat-cell *matCellDef="let expediente">{{ expediente.noExpediente }}</td>
-      </ng-container>
-  
-      <!-- Fecha Creación -->
-      <ng-container matColumnDef="fechaCreacion">
-        <th mat-header-cell *matHeaderCellDef>Fecha Creación</th>
-        <td mat-cell *matCellDef="let expediente">{{ expediente.fechaCreacion | date:'short' }}</td>
-      </ng-container>
-  
-      <!-- Motivo -->
-      <ng-container matColumnDef="motivo">
-        <th mat-header-cell *matHeaderCellDef>Motivo</th>
-        <td mat-cell *matCellDef="let expediente">{{ expediente.historialSesion.motivo }}</td>
-      </ng-container>
-  
-      <!-- Duración -->
-      <ng-container matColumnDef="duracion">
-        <th mat-header-cell *matHeaderCellDef>Duración</th>
-        <td mat-cell *matCellDef="let expediente">{{ expediente.historialSesion.duracion }}</td>
-      </ng-container>
-  
-      <!-- Observaciones -->
-      <ng-container matColumnDef="observaciones">
-        <th mat-header-cell *matHeaderCellDef>Observaciones</th>
-        <td mat-cell *matCellDef="let expediente">{{ expediente.historialSesion.observaciones }}</td>
-      </ng-container>
-  
-      <!-- Header y Filas -->
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
+    <div class="w-full overflow-x-auto">
+      <!-- Tabla de Angular Material -->
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    
+        <!-- No. Expediente -->
+        <ng-container matColumnDef="noExpediente">
+          <th mat-header-cell *matHeaderCellDef>No. Expediente</th>
+          <td mat-cell *matCellDef="let expediente">{{ expediente.noExpediente }}</td>
+        </ng-container>
+    
+        <!-- Fecha Creación -->
+        <ng-container matColumnDef="fechaCreacion">
+          <th mat-header-cell *matHeaderCellDef>Fecha Creación</th>
+          <td mat-cell *matCellDef="let expediente">{{ expediente.fechaCreacion | date:'short' }}</td>
+        </ng-container>
+
+        <!-- Fecha Creación -->
+        <ng-container matColumnDef="fechaSesion">
+          <th mat-header-cell *matHeaderCellDef>Fecha Creación</th>
+          <td mat-cell *matCellDef="let expediente">{{ expediente.historialSesion.fechaSesion | date:'short' }}</td>
+        </ng-container>
+    
+        <!-- Motivo -->
+        <ng-container matColumnDef="motivo">
+          <th mat-header-cell *matHeaderCellDef>Motivo</th>
+          <td mat-cell *matCellDef="let expediente">{{ expediente.historialSesion.motivo }}</td>
+        </ng-container>
+    
+        <!-- Duración -->
+        <ng-container matColumnDef="duracion">
+          <th mat-header-cell *matHeaderCellDef>Duración</th>
+          <td mat-cell *matCellDef="let expediente">{{ expediente.historialSesion.duracion }}</td>
+        </ng-container>
+    
+        <!-- Observaciones -->
+        <ng-container matColumnDef="observaciones">
+          <th mat-header-cell *matHeaderCellDef>Observaciones</th>
+          <td mat-cell *matCellDef="let expediente">{{ expediente.historialSesion.observaciones }}</td>
+        </ng-container>
+    
+        <!-- Header y Filas -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
   
     <!-- Paginador de Angular Material -->
     <mat-paginator 
       [length]="dataSource.data.length" 
-      [pageSize]="10" 
+      [pageSize]="5" 
       [pageSizeOptions]="[5, 10, 20]"
       aria-label="Paginación">
     </mat-paginator>
