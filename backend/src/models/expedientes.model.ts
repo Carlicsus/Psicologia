@@ -10,7 +10,6 @@ class Expedientes extends Model<IExpedientesAtrributes, IExpedientesCreationAttr
     private _noExpediente!: string;
     private _matricula!: string;
     private _usuario!: string;
-    private _fecha!: Date;
     private _tipo!: string ;
     private _estatus!: boolean
 
@@ -37,14 +36,6 @@ class Expedientes extends Model<IExpedientesAtrributes, IExpedientesCreationAttr
 
     public set usuario(value: string) {
         this._usuario = value;
-    }
-
-    public get fecha(): Date  {
-        return this._fecha;
-    }
-
-    public set fecha(value: Date) {
-        this._fecha = value;
     }
 
     public get tipo(): string {
@@ -105,19 +96,9 @@ export default Expedientes.init({
             this.setDataValue('usuario', value);
         }
     },
-    fecha: {
-        type: DataTypes.DATEONLY,
-        allowNull: false,
-        get() {
-            return this.getDataValue('fecha');
-        },
-        set(value: Date) {
-            this.setDataValue('fecha', value);
-        }
-    },
     tipo: {
         type: DataTypes.TEXT,
-        allowNull: true,
+        allowNull: false,
         get() {
             return this.getDataValue('tipo');
         },
@@ -128,7 +109,7 @@ export default Expedientes.init({
     estatus:{
         type:DataTypes.BOOLEAN,
         allowNull:false,
-        defaultValue:true,
+        defaultValue:false,
         get() {
             return this.getDataValue('estatus');
         },

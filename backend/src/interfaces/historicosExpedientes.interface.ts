@@ -4,12 +4,18 @@ import { Optional } from "sequelize";
 export interface IHistoricosExpedientesAttributes {
     noDocumento: string;
     noExpediente: string;
-    secion: number;
+    secion: string;
     resumen: string;
     actividad: string | null;
-    fecha: Date;
     createdAt?: Date;
     updatedAt?: Date;
+}
+
+export interface IHistoricosExpedientesNew {
+    noExpediente: string;
+    secion: string;
+    resumen:string;
+    actividad:string | null;
 }
 
 

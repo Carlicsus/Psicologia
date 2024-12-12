@@ -8,10 +8,9 @@ class HistoricosExpedientes extends Model<IHistoricosExpedientesAttributes, IHis
     // Propiedades privadas
     private _noDocumento!: string;
     private _noExpediente!: string;
-    private _secion!: number;
+    private _secion!: string;
     private _resumen!: string;
     private _actividad!: string | null;
-    private _fecha!: Date;
 
     // Getters y setters públicos
     public get noDocumento(): string {
@@ -30,11 +29,11 @@ class HistoricosExpedientes extends Model<IHistoricosExpedientesAttributes, IHis
         this._noExpediente = value;
     }
 
-    public get secion(): number {
+    public get secion(): string {
         return this._secion;
     }
 
-    public set secion(value: number) {
+    public set secion(value: string) {
         this._secion = value;
     }
 
@@ -54,13 +53,6 @@ class HistoricosExpedientes extends Model<IHistoricosExpedientesAttributes, IHis
         this._actividad = value;
     }
 
-    public get fecha(): Date {
-        return this._fecha;
-    }
-
-    public set fecha(value: Date) {
-        this._fecha = value;
-    }
 }
 
 // Inicializar el modelo HistoricoExpediente
@@ -90,12 +82,12 @@ export default HistoricosExpedientes.init({
         }
     },
     secion: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.TEXT,
         allowNull: false,
         get() {
             return this.getDataValue('secion');
         },
-        set(value: number) {
+        set(value: string) {
             this.setDataValue('secion', value);
         }
     },
@@ -117,16 +109,6 @@ export default HistoricosExpedientes.init({
         },
         set(value: string | null) {
             this.setDataValue('actividad', value);
-        }
-    },
-    fecha: {
-        type: DataTypes.DATEONLY,
-        allowNull: true,
-        get() {
-            return this.getDataValue('fecha');
-        },
-        set(value: Date) {
-            this.setDataValue('fecha', value);
         }
     }
 }, {

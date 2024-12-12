@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { body, validationResult } from 'express-validator';
+import { body, validationResult, check } from 'express-validator';
 
 class ExpedientesMiddleware{
 
@@ -14,10 +14,26 @@ class ExpedientesMiddleware{
         return ExpedientesMiddleware.instance;
     }
 
-    public async createExpedienteValidator (req: Request, res: Response, next: NextFunction): Promise<Response | void> {
-        await body().isArray().withMessage('El cuerpo de la solicitud no cumple con lo necesario para procesar la petición').run(req);
+    public async createExpedienteValidator (req:Request, res:Response, next:NextFunction): Promise<Response | void> {
+        await check('matricula')
+            .isString().withMessage('El cuerpo de la solicitud no cumple con lo necesario para procesar la peticion').bail()
+            .notEmpty().withMessage('El campo "matricuka" es obligatorio').bail()
+            .matches(/^\d{6}$/).withMessage('Las matriculas solo pueden contener 6 digitos consecutivos')
+            .run(req)
+        await check('usuario')
+            .isString().withMessage('El cuerpo de la solicitud no cumple con lo necesario para procesar la peticion').bail()
+            .notEmpty().withMessage('El campo "Usuario" es obligatorio').bail()
+            .custom((value:string)=>value.trim()!==value?false: true).withMessage("El nombre de usuario no puede contener espacios en blanco al principio o al final").bail()
+            .matches(/^(?!.*\s{2})[\w.-\s{1}]+$/).withMessage('Los nombres de usuario solo pueden contener letras, números, guiones bajos, puntos y ningun espacio doble')
+            .run(req)
+        await check('tipo')
+            .isString().withMessage('El cuerpo de la solicitud no cumple con lo necesario para procesar la peticion').bail()
+            .notEmpty().withMessage('El campo "Tipo" es obligatorio').bail()
+            .custom((value:string)=>value.trim()!==value?false: true).withMessage('Los tipos no puede contener espacios en blanco al principio o al final').bail()
+            .run(req)
     
         const errors = validationResult(req);
+        
         if (!errors.isEmpty()) {
             return res.status(400).json({
                 msg: 'Errores de validación',
@@ -25,29 +41,8 @@ class ExpedientesMiddleware{
             });
         }
     
-        // Iterar sobre cada objeto en el array para aplicar las validaciones
-        for (const [index] of req.body.entries()) {
-            await body(`${index}.noExpediente`)
-                .isString().withMessage('El cuerpo de la solicitud no cumple con lo necesario para procesar la petición').bail()
-                .notEmpty().withMessage('El campo "No. Expediente" es obligatorio').bail()
-                .matches(/^MX\/[auf]\/\d{4}\/\d{6}$/).withMessage('No cumple con la estructura MX/a/aaaa/nnnnnn').bail()
-                .run(req);
-        }
-    
-        await body('websocketclientid')
-            .custom((value:string)=>!req.headers.websocketclientid?false: true).withMessage('El header "websocketclientid" es obligatorio').bail()
-            .run(req);
-    
-        const finalErrors = validationResult(req);
-        if (!finalErrors.isEmpty()) {
-            return res.status(400).json({
-                msg: 'Errores de validación',
-                errors: finalErrors.array()
-            });
-        }
-    
         return next();
-    };
+    }
 }
 
 export default ExpedientesMiddleware.getInstance();

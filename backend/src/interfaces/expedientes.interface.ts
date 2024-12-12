@@ -4,11 +4,20 @@ export interface IExpedientesAtrributes {
     noExpediente: string;
     matricula: string;
     usuario: string;
-    fecha: Date;
     tipo: string;
     estatus: boolean;
     createdAt?: Date;
     updatedAt?: Date;
+}
+
+export interface IExpedienteNew{
+    matricula: string;
+    usuario: string;
+    tipo: string;
+}
+
+export interface IExpedienteOnlyMatricula{
+    matricula:string;
 }
 
 export interface IExpedientesCreationAttributes

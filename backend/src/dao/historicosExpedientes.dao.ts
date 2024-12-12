@@ -16,6 +16,21 @@ class HistoricosExpedientesDAO {
     return HistoricosExpedientesDAO.instance;
   }
 
+  public async findHistoricoByNoExpediente(noExpediente: string): Promise<IHistoricosExpedientesAttributes[]> {
+    const historico = await HistoricosExpedientes.findAll({
+      where: { noExpediente: noExpediente },
+      raw: true,
+    });
+    console.log(historico);
+
+    return historico as IHistoricosExpedientesAttributes[];
+  }
+
+  public async createOneHistorico(data: IHistoricosExpedientesCreationAttributes): Promise<boolean> {
+    await HistoricosExpedientes.create(data);
+    return true;
+  }
+
   // public async findHistoricoByNoExpediente(noExpediente: string): Promise<IHistoricosExpedientesAttributes[]> {
   //   const historico = await HistoricosExpedientes.findAll({
   //     where: { noExpediente: noExpediente },

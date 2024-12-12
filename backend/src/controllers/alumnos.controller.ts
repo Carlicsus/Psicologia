@@ -15,8 +15,8 @@ class AlumnosController {
     }
 
     public async getAllAlumnos(req: Request, res: Response): Promise<Response> {
-        const expedientes = await AlumnosDAO.getAllAlumnos();
-        return res.status(200).json(expedientes);
+        const alumnos = await AlumnosDAO.getAllAlumnos();
+        return res.status(200).json(alumnos);
     }
 
 

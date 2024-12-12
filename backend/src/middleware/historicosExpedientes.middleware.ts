@@ -1,39 +1,51 @@
-import {NextFunction, Request,Response} from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { check, validationResult } from 'express-validator';
 
-class HistoricosExpedientesMiddleware{
-    
+class HistoricosExpedientesMiddleware {
+
     private static instance: HistoricosExpedientesMiddleware;
 
-    private constructor() {}
+    private constructor() { }
 
-    public static getInstance(): HistoricosExpedientesMiddleware{
-        if(!HistoricosExpedientesMiddleware.instance){
+    public static getInstance(): HistoricosExpedientesMiddleware {
+        if (!HistoricosExpedientesMiddleware.instance) {
             HistoricosExpedientesMiddleware.instance = new HistoricosExpedientesMiddleware();
         }
         return HistoricosExpedientesMiddleware.instance;
     }
 
-    public async getAllHistoricoExpedienteValidator (req:Request, res:Response, next:NextFunction): Promise<Response | void> {
+    public async createHistoricoExpedienteValidator(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
         await check('noExpediente')
             .notEmpty().withMessage('Los parametros no cumplen con lo necesario para procesar la solicitud')
             .isString().withMessage('El No. de expediente debe de ser una cadena de texto')
-            .matches(/^MX\_[auf]\_\d{4}\_\d{6}$/).withMessage('No cumple con la estructura MX_[auf]_aaaa_nnnnnn').bail()
+            .run(req);
+        await check('secion')
+            .notEmpty().withMessage('Los parametros no cumplen con lo necesario para procesar la solicitud')
+            .isString().withMessage('El No. de expediente debe de ser una cadena de texto')
+            .run(req);
+        await check('resumen')
+            .notEmpty().withMessage('Los parametros no cumplen con lo necesario para procesar la solicitud')
+            .isString().withMessage('El No. de expediente debe de ser una cadena de texto')
+            .run(req);
+        await check('actividad')
+            .optional()
+            .notEmpty().withMessage('Los parametros no cumplen con lo necesario para procesar la solicitud')
+            .isString().withMessage('El No. de expediente debe de ser una cadena de texto')
             .run(req);
 
         const errors = validationResult(req);
-    
+
         if (!errors.isEmpty()) {
             return res.status(400).json({
                 msg: 'Errores de validación',
                 errors: errors.array()
             });
         }
-        
+
         return next();
     }
 
-    public async downloadPDFValidator (req:Request, res:Response, next:NextFunction): Promise<Response | void> {
+    public async downloadPDFValidator(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
         await check('noExpediente')
             .notEmpty().withMessage('Los parametros no cumplen con lo necesario para procesar la solicitud')
             .isString().withMessage('El No. de expediente debe de ser una cadena de texto')
@@ -53,9 +65,9 @@ class HistoricosExpedientesMiddleware{
                 errors: errors.array()
             });
         }
-        
+
         return next();
-            
+
     }
 }
 

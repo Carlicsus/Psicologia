@@ -1,5 +1,7 @@
 import Jwt from "jsonwebtoken";
 import { IJwtInputAtrributes } from "../interfaces/auth/token.interface";
+import { v4 as uuidv4 } from 'uuid'; // Importa uuid
+
 
 class TokenService {
 
@@ -19,7 +21,7 @@ class TokenService {
     }
 
     public generarId(): string {
-        return Math.random().toString(32).substring(2) + Date.now().toString(32);
+        return uuidv4();
     }
 }
 
